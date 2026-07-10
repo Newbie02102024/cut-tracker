@@ -3,146 +3,221 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#1A1B1E" />
+<meta name="theme-color" content="#0D0E11" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Temper" />
 <meta name="mobile-web-app-capable" content="yes" />
 <title>Temper — Cut Phase Tracker</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%231A1B1E'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23C1622D' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%231A1B1E'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23C1622D' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230D0E11'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23FF6B35' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230D0E11'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23FF6B35' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
 
   :root {
-    --bg: #1A1B1E;
-    --bg-grid: #1D1E22;
-    --surface: #222327;
-    --surface2: #2A2C31;
-    --surface3: #313339;
-    --border: #38393D;
-    --border-light: rgba(255,255,255,0.06);
-    --ember: #C1622D;
-    --ember-soft: rgba(193,98,45,0.16);
-    --temper: #4A7A96;
-    --temper-soft: rgba(74,122,150,0.16);
-    --chalk: #EDEAE3;
-    --slate: #8B8D92;
-    --slate-dim: #5C5E63;
-    --verdigris: #5F9E7C;
-    --verdigris-soft: rgba(95,158,124,0.16);
-    --danger: #B84C4C;
+    --bg: #0D0E11;
+    --surface: rgba(30,32,38,0.66);
+    --surface-solid: #1B1D22;
+    --surface2: rgba(255,255,255,0.045);
+    --surface3: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.16);
+    --ember: #FF6B35;
+    --ember-2: #FF8F5C;
+    --ember-soft: rgba(255,107,53,0.16);
+    --ember-glow: rgba(255,107,53,0.45);
+    --temper: #22D3EE;
+    --temper-2: #5EEAFB;
+    --temper-soft: rgba(34,211,238,0.16);
+    --temper-glow: rgba(34,211,238,0.4);
+    --chalk: #F7F5F1;
+    --slate: #9CA0AA;
+    --slate-dim: #62656E;
+    --verdigris: #34D399;
+    --verdigris-soft: rgba(52,211,153,0.16);
+    --gold: #FFC145;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; padding: 0; }
   body {
     background: var(--bg);
-    background-image:
-      linear-gradient(var(--bg-grid) 1px, transparent 1px),
-      linear-gradient(90deg, var(--bg-grid) 1px, transparent 1px);
-    background-size: 28px 28px;
     color: var(--chalk);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    padding-bottom: 88px;
+    padding-bottom: 92px;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
   }
-  .disp { font-family: 'Bebas Neue', 'Inter', sans-serif; letter-spacing: 0.045em; }
+  .bg-glow {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .bg-glow::before, .bg-glow::after {
+    content: ''; position: absolute; border-radius: 50%; filter: blur(80px);
+  }
+  .bg-glow::before {
+    width: 340px; height: 340px; top: -120px; left: -80px;
+    background: radial-gradient(circle, var(--ember-glow), transparent 70%);
+    opacity: 0.35;
+  }
+  .bg-glow::after {
+    width: 300px; height: 300px; bottom: 60px; right: -100px;
+    background: radial-gradient(circle, var(--temper-glow), transparent 70%);
+    opacity: 0.28;
+  }
+  #app { position: relative; z-index: 1; }
+
+  .disp { font-family: 'Bebas Neue', 'Inter', sans-serif; letter-spacing: 0.04em; }
   .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .grad-text {
+    background: linear-gradient(90deg, var(--ember-2), var(--gold) 55%, var(--temper-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulseGlow { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.9); } }
+  @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
 
   /* ---- Header / Gauge ---- */
-  .header { padding: 22px 18px 8px; position: relative; }
-  .eyebrow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
-  .brand { display: flex; align-items: center; gap: 8px; }
-  .brand-mark { width: 22px; height: 22px; border-radius: 5px; background: var(--ember-soft); display: flex; align-items: center; justify-content: center; border: 1px solid var(--ember); }
-  .brand-title { font-size: 1.4rem; line-height: 1; }
-  .header-actions { display: flex; align-items: center; gap: 8px; }
-  .streak-chip { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; padding: 4px 9px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate); }
-  .streak-chip b { color: var(--chalk); font-family: 'JetBrains Mono', monospace; }
-  .icon-btn { width: 28px; height: 28px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .header { padding: 24px 18px 6px; position: relative; }
+  .eyebrow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .brand { display: flex; align-items: center; gap: 9px; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--ember), #E8492A);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 18px var(--ember-glow), inset 0 1px 1px rgba(255,255,255,0.35);
+  }
+  .brand-title { font-size: 1.55rem; line-height: 1; }
+  .streak-chip {
+    display: flex; align-items: center; gap: 6px; font-size: 0.72rem; padding: 6px 12px;
+    border-radius: 20px; background: var(--surface); backdrop-filter: blur(14px);
+    border: 1px solid var(--border-strong); color: var(--slate);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+  }
+  .streak-chip b { color: var(--chalk); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+  .flame-pulse { animation: pulseGlow 1.6s ease-in-out infinite; filter: drop-shadow(0 0 4px var(--ember-glow)); }
 
-  .gauge-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin: 10px 0 0; }
+  .gauge-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin: 14px 0 0; animation: fadeSlide 0.5s ease; }
   .gauge-readout { position: absolute; top: 58%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
-  .gauge-weight { font-size: 2.6rem; font-weight: 700; line-height: 1; }
-  .gauge-weight .unit { font-size: 0.95rem; color: var(--slate); font-weight: 500; margin-left: 2px; }
-  .gauge-sub { font-size: 0.68rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+  .gauge-weight { font-size: 2.9rem; font-weight: 800; line-height: 1; letter-spacing: -0.01em; }
+  .gauge-weight .unit { font-size: 1rem; color: var(--slate); font-weight: 500; margin-left: 3px; }
+  .gauge-sub { font-size: 0.68rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px; font-weight: 600; }
 
-  .readout-row { display: flex; margin-top: 10px; border-top: 1px solid var(--border); }
-  .readout-cell { flex: 1; text-align: center; padding: 10px 4px; border-right: 1px solid var(--border); }
-  .readout-cell:last-child { border-right: none; }
-  .readout-val { font-family: 'JetBrains Mono', monospace; font-size: 1.05rem; font-weight: 600; }
-  .readout-label { font-size: 0.62rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .readout-row { display: flex; gap: 8px; margin-top: 14px; }
+  .readout-cell {
+    flex: 1; text-align: center; padding: 12px 4px; border-radius: 14px;
+    background: var(--surface); backdrop-filter: blur(14px); border: 1px solid var(--border);
+  }
+  .readout-val { font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 700; }
+  .readout-label { font-size: 0.6rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 3px; font-weight: 600; }
 
   /* ---- Tabs ---- */
-  .content { padding: 16px; }
-  .tabs { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--surface); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); z-index: 20; }
-  .tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 11px 0; background: none; border: none; color: var(--slate-dim); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; }
-  .tab-btn.active { color: var(--ember); }
-  .tab-btn.active svg { stroke: var(--ember) !important; }
+  .content { padding: 18px 16px; animation: fadeSlide 0.35s ease; }
+  .tabs {
+    position: fixed; bottom: 14px; left: 14px; right: 14px; display: flex;
+    background: rgba(24,25,30,0.85); backdrop-filter: blur(20px); border: 1px solid var(--border-strong);
+    border-radius: 22px; padding: 6px; z-index: 20; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .tab-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 9px 0; background: none; border: none; color: var(--slate-dim); font-size: 0.62rem;
+    text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; font-weight: 600;
+    border-radius: 16px; transition: background 0.2s;
+  }
+  .tab-btn.active { color: var(--chalk); background: linear-gradient(135deg, rgba(255,107,53,0.22), rgba(34,211,238,0.14)); }
+  .tab-btn.active svg { stroke: var(--ember-2) !important; }
+  .tab-btn:active { transform: scale(0.94); }
 
   /* ---- Cards ---- */
-  .card { background: var(--surface); border: 1px solid var(--border); border-top-color: var(--border-light); border-radius: 14px; padding: 16px; margin-bottom: 12px; position: relative; }
-  .rivet { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #4a4c52, #202124); top: 10px; }
-  .rivet.tl { left: 10px; } .rivet.tr { right: 10px; }
-  .card-title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-  .card-title { display: flex; align-items: center; gap: 8px; font-size: 1.15rem; }
-  .card-tag { font-size: 0.72rem; color: var(--slate); margin-left: 24px; margin-top: 1px; }
-  .pill { padding: 3px 10px; border-radius: 6px; font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; border: 1px solid transparent; }
+  .card {
+    background: var(--surface); backdrop-filter: blur(16px);
+    border: 1px solid var(--border); border-radius: 18px; padding: 17px; margin-bottom: 13px;
+    position: relative; box-shadow: 0 8px 28px rgba(0,0,0,0.28);
+  }
+  .card-title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 13px; }
+  .card-title { display: flex; align-items: center; gap: 9px; font-size: 1.2rem; }
+  .card-icon-badge {
+    width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .card-tag { font-size: 0.73rem; color: var(--slate); margin-left: 39px; margin-top: 1px; }
+  .pill { padding: 4px 11px; border-radius: 8px; font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; border: 1px solid transparent; font-weight: 700; }
 
-  .item-row { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 12px; border-radius: 8px; background: var(--surface2); border-left: 2px solid var(--border); margin-bottom: 7px; cursor: pointer; text-align: left; color: var(--chalk); font-size: 0.9rem; transition: background 0.15s, border-color 0.15s; }
-  .item-row.done { background: var(--verdigris-soft); border-left-color: var(--verdigris); }
-  .item-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-  .checkbox { width: 19px; height: 19px; border-radius: 4px; border: 1.5px solid var(--slate-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--surface3); }
-  .item-row.done .checkbox { background: var(--verdigris); border-color: var(--verdigris); }
+  .item-row {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 13px; border-radius: 12px; background: var(--surface2);
+    border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer;
+    text-align: left; color: var(--chalk); font-size: 0.91rem; transition: all 0.18s;
+  }
+  .item-row:active { transform: scale(0.985); }
+  .item-row.done {
+    background: linear-gradient(135deg, rgba(52,211,153,0.14), rgba(52,211,153,0.05));
+    border-color: rgba(52,211,153,0.4);
+  }
+  .item-left { display: flex; align-items: center; gap: 11px; flex: 1; min-width: 0; }
+  .checkbox {
+    width: 21px; height: 21px; border-radius: 7px; border: 1.5px solid var(--slate-dim);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--surface3);
+    transition: all 0.18s;
+  }
+  .item-row.done .checkbox { background: linear-gradient(135deg, var(--verdigris), #10B981); border-color: transparent; box-shadow: 0 0 10px rgba(52,211,153,0.5); }
   .item-row.done .item-name { text-decoration: line-through; color: var(--slate); }
-  .item-sets { font-size: 0.72rem; color: var(--slate); flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
-  .meal-desc { font-size: 0.74rem; color: var(--slate); margin-top: 2px; line-height: 1.35; }
+  .item-sets { font-size: 0.73rem; color: var(--slate); flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
+  .meal-desc { font-size: 0.75rem; color: var(--slate); margin-top: 3px; line-height: 1.4; }
 
-  .date-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .nav-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 9px; color: var(--slate); }
-  .date-label { display: flex; align-items: center; gap: 6px; font-size: 0.88rem; font-family: 'JetBrains Mono', monospace; }
+  .date-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
+  .nav-btn { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border-strong); border-radius: 11px; padding: 8px 10px; color: var(--chalk); }
+  .nav-btn:active { transform: scale(0.92); }
+  .date-label { display: flex; align-items: center; gap: 7px; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
 
-  .water-grid { display: flex; gap: 5px; }
-  .water-cup { flex: 1; height: 30px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); cursor: pointer; }
-  .water-cup.filled { background: var(--temper); border-color: var(--temper); }
+  .water-grid { display: flex; gap: 6px; }
+  .water-cup { flex: 1; height: 34px; border-radius: 9px; background: var(--surface2); border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
+  .water-cup.filled { background: linear-gradient(180deg, var(--temper-2), var(--temper)); border-color: transparent; box-shadow: 0 0 12px var(--temper-glow); }
 
-  .energy-row { display: flex; gap: 8px; margin-top: 4px; }
-  .energy-dot { flex: 1; height: 34px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--slate); cursor: pointer; }
-  .energy-dot.active { background: var(--ember-soft); border-color: var(--ember); color: var(--chalk); font-weight: 600; }
+  .energy-row { display: flex; gap: 8px; margin-top: 5px; }
+  .energy-dot {
+    flex: 1; height: 38px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--slate); cursor: pointer; font-weight: 700;
+  }
+  .energy-dot.active { background: linear-gradient(135deg, var(--ember), var(--gold)); border-color: transparent; color: #1A1000; box-shadow: 0 0 14px var(--ember-glow); }
 
-  .exercise-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .exercise-tag { font-size: 0.72rem; padding: 5px 9px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate); font-family: 'JetBrains Mono', monospace; }
+  .exercise-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .exercise-tag { font-size: 0.73rem; padding: 6px 10px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate); font-family: 'JetBrains Mono', monospace; }
 
-  input[type=number], input[type=text], input[type=password] { flex: 1; padding: 10px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--chalk); font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
+  input[type=number], input[type=text] {
+    flex: 1; padding: 11px 13px; border-radius: 10px; background: var(--surface2);
+    border: 1px solid var(--border-strong); color: var(--chalk); font-size: 0.92rem; font-family: 'JetBrains Mono', monospace;
+  }
   input::placeholder { color: var(--slate-dim); }
   .input-row { display: flex; gap: 8px; }
-  .btn { padding: 10px 16px; border-radius: 8px; border: none; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.03em; font-family: 'Inter', sans-serif; cursor: pointer; }
-  .btn-ember { background: var(--ember); color: #1A1B1E; }
-  .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--slate); }
-  .btn:disabled { opacity: 0.5; }
+  .btn { padding: 11px 18px; border-radius: 10px; border: none; font-weight: 800; font-size: 0.83rem; text-transform: uppercase; letter-spacing: 0.03em; font-family: 'Inter', sans-serif; cursor: pointer; }
+  .btn:active { transform: scale(0.96); }
+  .btn-ember { background: linear-gradient(135deg, var(--ember), #E8492A); color: #1A1000; box-shadow: 0 4px 16px var(--ember-glow); }
+  .btn-outline { background: var(--surface2); border: 1px solid var(--border-strong); color: var(--slate); }
 
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
-  .stat-label { font-size: 0.68rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; }
-  .stat-value { font-size: 1.25rem; margin-top: 3px; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 13px; }
+  .stat-label { font-size: 0.68rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  .stat-value { font-size: 1.3rem; margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
 
-  .empty-note { text-align: center; color: var(--slate); font-size: 0.85rem; padding: 22px 10px; line-height: 1.5; }
+  .empty-note { text-align: center; color: var(--slate); font-size: 0.86rem; padding: 22px 10px; line-height: 1.5; }
 
   .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
-  .heatmap-legend { display: flex; align-items: center; gap: 4px; justify-content: flex-end; margin-top: 8px; font-size: 0.62rem; color: var(--slate); }
-  .legend-sq { width: 9px; height: 9px; border-radius: 2px; }
+  .heatmap-legend { display: flex; align-items: center; gap: 4px; justify-content: flex-end; margin-top: 9px; font-size: 0.62rem; color: var(--slate); }
+  .legend-sq { width: 10px; height: 10px; border-radius: 3px; }
 
-  .measure-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+  .measure-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 11px; }
   .measure-grid input { text-align: center; }
-  .measure-field-label { font-size: 0.62rem; color: var(--slate); text-align: center; margin-top: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
-  .measure-history { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
-  .measure-row { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 8px 10px; background: var(--surface2); border-radius: 8px; }
+  .measure-field-label { font-size: 0.62rem; color: var(--slate); text-align: center; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+  .measure-history { display: flex; flex-direction: column; gap: 7px; margin-top: 11px; }
+  .measure-row { display: flex; justify-content: space-between; font-size: 0.79rem; padding: 9px 11px; background: var(--surface2); border-radius: 10px; }
   .measure-row .d { color: var(--slate); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; }
 
   svg text { font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
 <body>
+<div class="bg-glow"></div>
 <div id="app"></div>
 
 <script>
@@ -323,23 +398,20 @@ function computeStreak(){
   }
   return count;
 }
-function checkIcon(){ return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1B1E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
+function checkIcon(){ return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#052e1c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
 
 const ICON = {
-  hammer: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12l-8.5 8.5a1.5 1.5 0 0 1-2-2L13 10"/><path d="M17.6 3.5 20.5 6.4a1 1 0 0 1 0 1.4l-2.2 2.2a1 1 0 0 1-1.4 0L14 7a1 1 0 0 1 0-1.4l2.2-2.1a1 1 0 0 1 1.4 0z"/></svg>`,
-  calendar: c => `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
-  chevronLeft: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>`,
-  chevronRight: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>`,
-  utensils: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v11M9 2v20M17 2c-2.2 0-4 3.6-4 8s1.8 8 4 8"/></svg>`,
-  droplet: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><path d="M12 2s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg>`,
-  target: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
-  gauge: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12 16 8"/><circle cx="12" cy="12" r="1"/></svg>`,
-  trend: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
-  ruler: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7v3M11 7v3M15 7v3M19 7v3"/></svg>`,
-  flame: c => `<svg width="12" height="12" viewBox="0 0 24 24" fill="${c}" stroke="none"><path d="M12 2c-2 4-5 5-5 10a5 5 0 0 0 10 0c0-1-.5-2-1-3 0 2-1 3-2 3-2 0-2-2-2-4 0-2 1-4 0-6z"/></svg>`,
-  spark: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/><circle cx="12" cy="12" r="3"/></svg>`,
-  gear: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.6 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1z"/></svg>`,
-  send: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`,
+  hammer: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12l-8.5 8.5a1.5 1.5 0 0 1-2-2L13 10"/><path d="M17.6 3.5 20.5 6.4a1 1 0 0 1 0 1.4l-2.2 2.2a1 1 0 0 1-1.4 0L14 7a1 1 0 0 1 0-1.4l2.2-2.1a1 1 0 0 1 1.4 0z"/></svg>`,
+  calendar: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
+  chevronLeft: c => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.6"><polyline points="15 18 9 12 15 6"/></svg>`,
+  chevronRight: c => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>`,
+  utensils: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v11M9 2v20M17 2c-2.2 0-4 3.6-4 8s1.8 8 4 8"/></svg>`,
+  droplet: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M12 2s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg>`,
+  target: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  gauge: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12 16 8"/><circle cx="12" cy="12" r="1"/></svg>`,
+  trend: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
+  ruler: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7v3M11 7v3M15 7v3M19 7v3"/></svg>`,
+  flame: c => `<svg width="13" height="13" viewBox="0 0 24 24" fill="${c}" stroke="none"><path d="M12 2c-2 4-5 5-5 10a5 5 0 0 0 10 0c0-1-.5-2-1-3 0 2-1 3-2 3-2 0-2-2-2-4 0-2 1-4 0-6z"/></svg>`,
 };
 
 // ============ Gauge ============
@@ -355,7 +427,7 @@ function arcPath(cx, cy, r, thetaStart, thetaEnd){
   return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${largeArc} 1 ${p2.x} ${p2.y}`;
 }
 function drawGauge(current, start, goal){
-  const cx = 150, cy = 118, r = 108;
+  const cx = 150, cy = 118, r = 106;
   const span = start - goal;
   const fraction = span > 0 ? Math.min(1, Math.max(0, (start-current)/span)) : 0;
   const thetaCurrent = 180 - fraction*180;
@@ -363,19 +435,23 @@ function drawGauge(current, start, goal){
   const track = arcPath(cx, cy, r, 180, 0);
   const fill = arcPath(cx, cy, r, 180, thetaCurrent);
   return `
-  <svg viewBox="0 0 300 140" width="100%" style="max-width:340px;overflow:visible">
+  <svg viewBox="0 0 300 148" width="100%" style="max-width:360px;overflow:visible">
     <defs>
       <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#C1622D"/>
-        <stop offset="55%" stop-color="#8f6f56"/>
-        <stop offset="100%" stop-color="#4A7A96"/>
+        <stop offset="0%" stop-color="#FF6B35"/>
+        <stop offset="50%" stop-color="#FFC145"/>
+        <stop offset="100%" stop-color="#22D3EE"/>
       </linearGradient>
+      <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="6" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
     </defs>
-    <path d="${track}" stroke="#38393D" stroke-width="12" fill="none" stroke-linecap="round"/>
-    <path d="${fill}" stroke="url(#gaugeGrad)" stroke-width="12" fill="none" stroke-linecap="round"/>
-    <circle cx="${needle.x}" cy="${needle.y}" r="7" fill="#EDEAE3" stroke="#1A1B1E" stroke-width="2.5"/>
-    <text x="20" y="132" fill="#5C5E63" font-size="10">${start}</text>
-    <text x="270" y="132" fill="#5C5E63" font-size="10" text-anchor="end">${goal}</text>
+    <path d="${track}" stroke="rgba(255,255,255,0.08)" stroke-width="14" fill="none" stroke-linecap="round"/>
+    <path d="${fill}" stroke="url(#gaugeGrad)" stroke-width="14" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+    <circle cx="${needle.x}" cy="${needle.y}" r="8" fill="#F7F5F1" stroke="#0D0E11" stroke-width="3" filter="url(#glow)"/>
+    <text x="18" y="140" fill="#62656E" font-size="10" font-weight="600">${start}kg</text>
+    <text x="282" y="140" fill="#62656E" font-size="10" font-weight="600" text-anchor="end">${goal}kg</text>
   </svg>`;
 }
 
@@ -405,25 +481,25 @@ function drawHeatmap(){
       const dow = dayOfWeek(dateKey);
       const plan = SPLIT[dow];
       const log = getLog(dateKey);
-      let color = '#2A2C31';
+      let color = 'rgba(255,255,255,0.05)';
       if (plan.rest) {
-        color = '#313339';
+        color = 'rgba(255,255,255,0.09)';
       } else {
         const doneCount = plan.exercises.filter(e => log.exercises[e.id]).length;
         const frac = doneCount/plan.exercises.length;
-        if (frac >= 1) color = '#C1622D';
-        else if (frac > 0.5) color = '#8f6f56';
-        else if (frac > 0) color = '#4A7A96';
+        if (frac >= 1) color = '#FF6B35';
+        else if (frac > 0.5) color = '#FFC145';
+        else if (frac > 0) color = '#22D3EE';
       }
       const isToday = dateKey === today;
-      rects += `<rect x="${ci*(cell+gap)}" y="${di*(cell+gap)}" width="${cell}" height="${cell}" rx="2.5" fill="${color}" ${isToday ? 'stroke="#EDEAE3" stroke-width="1"' : ''}><title>${dateKey}</title></rect>`;
+      rects += `<rect x="${ci*(cell+gap)}" y="${di*(cell+gap)}" width="${cell}" height="${cell}" rx="2.5" fill="${color}" ${isToday ? 'stroke="#F7F5F1" stroke-width="1"' : ''}><title>${dateKey}</title></rect>`;
     });
   });
   return `<div class="heatmap-scroll"><svg viewBox="0 0 ${svgW} ${svgH}" width="${Math.max(svgW,280)}" height="${svgH}">${rects}</svg></div>`;
 }
 
 function drawTrend(series, goal){
-  const w = 320, h = 130, pad = 22;
+  const w = 320, h = 132, pad = 22;
   const weights = series.map(s=>s.weight);
   const min = Math.min(...weights, goal) - 1;
   const max = Math.max(...weights, goal) + 1;
@@ -432,18 +508,22 @@ function drawTrend(series, goal){
   const points = series.map((s,i) => `${x(i)},${y(s.weight)}`).join(' ');
   const areaPoints = `${x(0)},${h-pad} ${points} ${x(series.length-1)},${h-pad}`;
   const goalY = y(goal);
-  const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="2.8" fill="#C1622D"/>`).join('');
+  const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="3.2" fill="#FF6B35" stroke="#0D0E11" stroke-width="1.5"/>`).join('');
   return `<svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
     <defs>
       <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#C1622D" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#C1622D" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#FF6B35"/>
+        <stop offset="100%" stop-color="#22D3EE"/>
       </linearGradient>
     </defs>
-    <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#4A7A96" stroke-dasharray="4 3"/>
-    <text x="${w-pad+2}" y="${goalY+3}" fill="#4A7A96" font-size="9">GOAL</text>
+    <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#22D3EE" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <text x="${w-pad+2}" y="${goalY+3}" fill="#22D3EE" font-size="9" font-weight="700">GOAL</text>
     <polygon points="${areaPoints}" fill="url(#trendFill)"/>
-    <polyline points="${points}" fill="none" stroke="#C1622D" stroke-width="2.2"/>
+    <polyline points="${points}" fill="none" stroke="url(#lineGrad)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
     ${dots}
   </svg>`;
 }
@@ -468,12 +548,10 @@ function render(){
   <div class="header">
     <div class="eyebrow">
       <div class="brand">
-        <div class="brand-mark">${ICON.hammer('#C1622D')}</div>
-        <span class="disp brand-title">TEMPER</span>
+        <div class="brand-mark">${ICON.hammer('#1A1000')}</div>
+        <span class="disp brand-title grad-text">TEMPER</span>
       </div>
-      <div class="header-actions">
-        <div class="streak-chip">${ICON.flame('#C1622D')} <b class="mono">${streak}</b> day streak</div>
-      </div>
+      <div class="streak-chip"><span class="flame-pulse" style="display:flex">${ICON.flame('#FF6B35')}</span> <b>${streak}</b>&nbsp;day streak</div>
     </div>
 
     <div class="gauge-wrap">
@@ -485,9 +563,9 @@ function render(){
     </div>
 
     <div class="readout-row">
-      <div class="readout-cell"><div class="readout-val">${daysLeft}</div><div class="readout-label">Days Left</div></div>
-      <div class="readout-cell"><div class="readout-val">${Math.max(0,(totalToLose-lostSoFar)).toFixed(1)}</div><div class="readout-label">Kg To Go</div></div>
-      <div class="readout-cell"><div class="readout-val">${wAvg ? wAvg.toFixed(1) : '—'}</div><div class="readout-label">7d Avg</div></div>
+      <div class="readout-cell"><div class="readout-val" style="color:var(--ember-2)">${daysLeft}</div><div class="readout-label">Days Left</div></div>
+      <div class="readout-cell"><div class="readout-val" style="color:var(--gold)">${Math.max(0,(totalToLose-lostSoFar)).toFixed(1)}</div><div class="readout-label">Kg To Go</div></div>
+      <div class="readout-cell"><div class="readout-val" style="color:var(--temper-2)">${wAvg ? wAvg.toFixed(1) : '—'}</div><div class="readout-label">7d Avg</div></div>
     </div>
   </div>
   <div class="content">`;
@@ -495,19 +573,18 @@ function render(){
   if (tab === "today") {
     html += `
     <div class="date-nav">
-      <button class="nav-btn" onclick="viewDate=addDays(viewDate,-1);render()">${ICON.chevronLeft('#8B8D92')}</button>
-      <div class="date-label" style="color:${isToday?'var(--chalk)':'var(--slate)'}">${ICON.calendar('#8B8D92')} ${isToday ? "TODAY" : fmtDate(viewDate).toUpperCase()}</div>
-      <button class="nav-btn" onclick="viewDate=addDays(viewDate,1);render()">${ICON.chevronRight('#8B8D92')}</button>
+      <button class="nav-btn" onclick="viewDate=addDays(viewDate,-1);render()">${ICON.chevronLeft('#F7F5F1')}</button>
+      <div class="date-label" style="color:${isToday?'var(--chalk)':'var(--slate)'}">${ICON.calendar('#9CA0AA')} ${isToday ? "TODAY" : fmtDate(viewDate).toUpperCase()}</div>
+      <button class="nav-btn" onclick="viewDate=addDays(viewDate,1);render()">${ICON.chevronRight('#F7F5F1')}</button>
     </div>
 
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
       <div class="card-title-row">
         <div>
-          <div class="card-title">${ICON.hammer('#C1622D')} <span class="disp">${plan.name.toUpperCase()}</span></div>
+          <div class="card-title"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.hammer('#FF6B35')}</span> <span class="disp">${plan.name.toUpperCase()}</span></div>
           <div class="card-tag">${plan.tag}</div>
         </div>
-        ${!plan.rest ? `<span class="pill" style="color:var(--verdigris);background:var(--verdigris-soft);border-color:var(--verdigris)">${plan.exercises.filter(e=>dayLog.exercises[e.id]).length}/${plan.exercises.length}</span>` : ''}
+        ${!plan.rest ? `<span class="pill" style="color:var(--verdigris);background:var(--verdigris-soft);border-color:rgba(52,211,153,0.35)">${plan.exercises.filter(e=>dayLog.exercises[e.id]).length}/${plan.exercises.length}</span>` : ''}
       </div>
       ${plan.exercises.map(ex => {
         const done = !!dayLog.exercises[ex.id];
@@ -517,8 +594,8 @@ function render(){
         </button>`;
       }).join('')}
       ${!plan.rest ? `
-      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-        <div class="card-tag" style="margin-left:0;margin-bottom:6px">SESSION FELT</div>
+      <div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border)">
+        <div class="card-tag" style="margin-left:0;margin-bottom:7px">SESSION FELT</div>
         <div class="energy-row">
           ${['Wrecked','Rough','Okay','Strong','Peak'].map((label,i) => `<button class="energy-dot ${dayLog.energy===i+1?'active':''}" onclick="setEnergy('${viewDate}',${i+1})">${i+1}</button>`).join('')}
         </div>
@@ -526,10 +603,9 @@ function render(){
     </div>
 
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
       <div class="card-title-row">
-        <div class="card-title">${ICON.utensils('#4A7A96')} <span class="disp">MEALS</span></div>
-        <span class="pill" style="color:var(--temper);background:var(--temper-soft);border-color:var(--temper)">${meals.label}</span>
+        <div class="card-title"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.utensils('#22D3EE')}</span> <span class="disp">MEALS</span></div>
+        <span class="pill" style="color:var(--temper-2);background:var(--temper-soft);border-color:rgba(34,211,238,0.35)">${meals.label}</span>
       </div>
       ${meals.items.map(m => {
         const done = !!dayLog.meals[m.id];
@@ -542,16 +618,15 @@ function render(){
           </div>
         </button>`;
       }).join('')}
-      <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.72rem;color:var(--slate)">
+      <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.72rem;color:var(--slate)">
         <span>DAILY TARGET</span><span class="mono">${MACRO_TARGET.kcal} kcal · P${MACRO_TARGET.protein} F${MACRO_TARGET.fat} C${MACRO_TARGET.carbs}</span>
       </div>
     </div>
 
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
       <div class="card-title-row">
-        <div class="card-title">${ICON.droplet('#4A7A96')} <span class="disp">WATER</span></div>
-        <span class="mono" style="font-size:0.8rem">${dayLog.water}/8</span>
+        <div class="card-title"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.droplet('#22D3EE')}</span> <span class="disp">WATER</span></div>
+        <span class="mono" style="font-size:0.82rem;font-weight:700">${dayLog.water}/8</span>
       </div>
       <div class="water-grid">
         ${Array.from({length:8}).map((_,i) => `<button class="water-cup ${i<dayLog.water?'filled':''}" onclick="setWater('${viewDate}', ${i+1===dayLog.water ? i : i+1})"></button>`).join('')}
@@ -560,12 +635,11 @@ function render(){
   }
 
   if (tab === "plan") {
-    html += `<p style="font-size:0.72rem;color:var(--slate);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em">Home dumbbell split · repeats weekly</p>`;
+    html += `<p style="font-size:0.73rem;color:var(--slate);margin-bottom:13px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600">Home dumbbell split · repeats weekly</p>`;
     [1,2,3,4,5,6,0].forEach(d => {
       html += `<div class="card">
-        <span class="rivet tl"></span><span class="rivet tr"></span>
-        <div class="card-title-row" style="margin-bottom:8px">
-          <span class="disp" style="font-size:1.05rem">${DAY_NAMES[d]} · ${SPLIT[d].name.toUpperCase()}</span>
+        <div class="card-title-row" style="margin-bottom:9px">
+          <span class="disp" style="font-size:1.1rem">${DAY_NAMES[d]} · ${SPLIT[d].name.toUpperCase()}</span>
           ${SPLIT[d].rest ? `<span class="pill" style="color:var(--slate);background:var(--surface2);border-color:var(--border)">Rest</span>` : ''}
         </div>
         <div class="exercise-tags">${SPLIT[d].exercises.map(ex => `<span class="exercise-tag">${ex.name} · ${ex.sets}</span>`).join('')}</div>
@@ -577,14 +651,12 @@ function render(){
     const series = weightSeries();
     html += `
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
-      <div class="card-title" style="margin-bottom:10px">${ICON.trend('#C1622D')} <span class="disp">WEIGHT TREND</span></div>
+      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.trend('#FF6B35')}</span> <span class="disp">WEIGHT TREND</span></div>
       ${series.length>=2 ? drawTrend(series, state.profile.goalWeight) : `<div class="empty-note">Log at least 2 weigh-ins to see your trend.</div>`}
     </div>
 
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
-      <div class="card-title" style="margin-bottom:10px">${ICON.target('#4A7A96')} <span class="disp">LOG TODAY'S WEIGHT</span></div>
+      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.target('#22D3EE')}</span> <span class="disp">LOG TODAY'S WEIGHT</span></div>
       <div class="input-row">
         <input type="number" step="0.1" inputmode="decimal" id="weightInput" placeholder="${cw.toFixed(1)}" />
         <button class="btn btn-ember" onclick="logWeight(todayKey(), document.getElementById('weightInput').value)">Log</button>
@@ -592,8 +664,7 @@ function render(){
     </div>
 
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
-      <div class="card-title" style="margin-bottom:10px">${ICON.ruler('#4A7A96')} <span class="disp">MEASUREMENTS</span></div>
+      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.ruler('#22D3EE')}</span> <span class="disp">MEASUREMENTS</span></div>
       <div class="measure-grid">
         <div><input type="number" step="0.1" id="mWaist" placeholder="—" /><div class="measure-field-label">Waist cm</div></div>
         <div><input type="number" step="0.1" id="mChest" placeholder="—" /><div class="measure-field-label">Chest cm</div></div>
@@ -606,26 +677,24 @@ function render(){
     </div>
 
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
-      <div class="card-title" style="margin-bottom:10px">${ICON.gauge('#C1622D')} <span class="disp">CONSISTENCY</span></div>
+      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.gauge('#FF6B35')}</span> <span class="disp">CONSISTENCY</span></div>
       ${drawHeatmap()}
       <div class="heatmap-legend">
         <span>less</span>
-        <span class="legend-sq" style="background:#2A2C31"></span>
-        <span class="legend-sq" style="background:#4A7A96"></span>
-        <span class="legend-sq" style="background:#8f6f56"></span>
-        <span class="legend-sq" style="background:#C1622D"></span>
+        <span class="legend-sq" style="background:rgba(255,255,255,0.05)"></span>
+        <span class="legend-sq" style="background:#22D3EE"></span>
+        <span class="legend-sq" style="background:#FFC145"></span>
+        <span class="legend-sq" style="background:#FF6B35"></span>
         <span>more</span>
       </div>
     </div>
 
     <div class="card">
-      <span class="rivet tl"></span><span class="rivet tr"></span>
-      <div class="card-title" style="margin-bottom:10px">${ICON.flame('#C1622D')} <span class="disp">STATS</span></div>
+      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.flame('#FF6B35')}</span> <span class="disp">STATS</span></div>
       <div class="stats-grid">
         <div class="stat-box"><div class="stat-label">Lost So Far</div><div class="stat-value">${lostSoFar.toFixed(1)} kg</div></div>
         <div class="stat-box"><div class="stat-label">Remaining</div><div class="stat-value">${Math.max(0,totalToLose-lostSoFar).toFixed(1)} kg</div></div>
-        <div class="stat-box"><div class="stat-label">Target Date</div><div class="stat-value" style="font-size:0.95rem">${fmtShort(targetDate)}</div></div>
+        <div class="stat-box"><div class="stat-label">Target Date</div><div class="stat-value" style="font-size:1rem">${fmtShort(targetDate)}</div></div>
         <div class="stat-box"><div class="stat-label">Streak</div><div class="stat-value">${streak}d</div></div>
       </div>
     </div>`;
@@ -633,14 +702,12 @@ function render(){
 
   html += `</div>
   <div class="tabs">
-    <button class="tab-btn ${tab==='today'?'active':''}" onclick="tab='today';render()">${ICON.hammer(tab==='today'?'#C1622D':'#5C5E63')}<span>Today</span></button>
-    <button class="tab-btn ${tab==='plan'?'active':''}" onclick="tab='plan';render()">${ICON.calendar(tab==='plan'?'#C1622D':'#5C5E63')}<span>Plan</span></button>
-    <button class="tab-btn ${tab==='progress'?'active':''}" onclick="tab='progress';render()">${ICON.trend(tab==='progress'?'#C1622D':'#5C5E63')}<span>Progress</span></button>
+    <button class="tab-btn ${tab==='today'?'active':''}" onclick="tab='today';render()">${ICON.hammer(tab==='today'?'#FF6B35':'#62656E')}<span>Today</span></button>
+    <button class="tab-btn ${tab==='plan'?'active':''}" onclick="tab='plan';render()">${ICON.calendar(tab==='plan'?'#FF6B35':'#62656E')}<span>Plan</span></button>
+    <button class="tab-btn ${tab==='progress'?'active':''}" onclick="tab='progress';render()">${ICON.trend(tab==='progress'?'#FF6B35':'#62656E')}<span>Progress</span></button>
   </div>`;
 
   document.getElementById('app').innerHTML = html;
-  const scroller = document.getElementById('chatScroll');
-  if (scroller) scroller.scrollTop = scroller.scrollHeight;
 }
 
 load();

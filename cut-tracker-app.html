@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#12141A" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Cut Phase" />
+<meta name="mobile-web-app-capable" content="yes" />
+<title>Cut Phase Tracker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%2312141A'/%3E%3Cpath d='M20 50h60M30 35v30M70 35v30M20 42v16M80 42v16' stroke='%23B8352F' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2312141A'/%3E%3Cpath d='M20 50h60M30 35v30M70 35v30M20 42v16M80 42v16' stroke='%23B8352F' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E" />
+<style>
+  :root {
+    --bg: #12141A;
+    --surface: #1C1F26;
+    --surface2: #242832;
+    --border: #2C303A;
+    --crimson: #B8352F;
+    --crimson-soft: rgba(184,53,47,0.15);
+    --gold: #C9A44C;
+    --gold-soft: rgba(201,164,76,0.15);
+    --text: #F0EEE9;
+    --text-dim: #9A9FAA;
+    --success: #4C9A6A;
+    --success-soft: rgba(76,154,106,0.15);
+    --blue: #5B9FD9;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, sans-serif;
+    padding-bottom: 84px;
+    min-height: 100vh;
+  }
+  .head-font { font-family: Arial, Helvetica, sans-serif; font-weight: 800; letter-spacing: 0.02em; }
+  .num-font { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .header { padding: 24px 16px 16px; border-bottom: 1px solid var(--border); }
+  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  h1 { font-size: 1.25rem; margin: 0; }
+  .subtitle { font-size: 0.85rem; color: var(--text-dim); margin: 4px 0 0; }
+  .pill { padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 4px; }
+  .weight-row { display: flex; justify-content: space-between; align-items: baseline; margin: 16px 0 6px; }
+  .weight-big { font-size: 1.75rem; font-weight: 700; }
+  .weight-big span { font-size: 0.9rem; color: var(--text-dim); font-weight: 400; }
+  .bar-track { width: 100%; height: 12px; border-radius: 999px; background: var(--surface2); overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--crimson), var(--gold)); transition: width 0.6s; }
+  .bar-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.75rem; color: var(--text-dim); }
+  .content { padding: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+  .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .card-title { display: flex; align-items: center; gap: 8px; font-size: 1rem; }
+  .card-tag { font-size: 0.75rem; color: var(--text-dim); margin-left: 24px; }
+  .item-row { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 10px 12px; border-radius: 12px; background: var(--surface2); border: 1px solid transparent; margin-bottom: 8px; cursor: pointer; text-align: left; color: var(--text); font-size: 0.9rem; }
+  .item-row.done { background: var(--success-soft); border-color: var(--success); }
+  .item-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+  .checkbox { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--text-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .item-row.done .checkbox { background: var(--success); border-color: var(--success); }
+  .item-row.done .item-name { text-decoration: line-through; color: var(--text-dim); }
+  .item-sets { font-size: 0.75rem; color: var(--text-dim); flex-shrink: 0; }
+  .meal-desc { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; }
+  .date-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .nav-btn { background: var(--surface); border: none; border-radius: 10px; padding: 8px; color: var(--text-dim); }
+  .water-grid { display: flex; gap: 6px; }
+  .water-cup { flex: 1; height: 32px; border-radius: 8px; background: var(--surface2); border: none; cursor: pointer; }
+  .water-cup.filled { background: var(--blue); }
+  .tabs { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--surface); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); }
+  .tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 0; background: none; border: none; color: var(--text-dim); font-size: 0.75rem; }
+  .tab-btn.active { color: var(--text); }
+  .exercise-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .exercise-tag { font-size: 0.75rem; padding: 4px 8px; border-radius: 8px; background: var(--surface2); color: var(--text-dim); }
+  .weight-input-row { display: flex; gap: 8px; }
+  input[type=number] { flex: 1; padding: 10px 12px; border-radius: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--text); font-size: 0.9rem; }
+  .save-btn { padding: 10px 18px; border-radius: 12px; background: var(--crimson); color: #fff; border: none; font-weight: 600; font-size: 0.9rem; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-label { font-size: 0.75rem; color: var(--text-dim); }
+  .stat-value { font-size: 1.15rem; margin-top: 2px; }
+  .empty-note { text-align: center; color: var(--text-dim); font-size: 0.9rem; padding: 24px 0; }
+  svg text { font-family: ui-monospace, monospace; fill: var(--text-dim); font-size: 8px; }
+  .install-banner { background: var(--gold-soft); border: 1px solid var(--gold); border-radius: 12px; padding: 10px 12px; font-size: 0.78rem; color: var(--text); margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+// ---------- Data ----------
+const SPLIT = {
+  1: { name: "Upper Body — Push", tag: "Chest / Shoulders / Triceps", rest: false, exercises: [
+    { id: "mon1", name: "DB Flat Bench Press", sets: "4x8-10" },
+    { id: "mon2", name: "DB Shoulder Press", sets: "3x10-12" },
+    { id: "mon3", name: "Incline DB Press", sets: "3x10-12" },
+    { id: "mon4", name: "DB Lateral Raise", sets: "3x15" },
+    { id: "mon5", name: "DB Overhead Triceps Extension", sets: "3x12" },
+    { id: "mon6", name: "DB Kickbacks", sets: "3x12" },
+  ]},
+  2: { name: "Lower Body A", tag: "Quads / Hamstrings / Calves", rest: false, exercises: [
+    { id: "tue1", name: "DB Goblet Squat", sets: "4x10-12" },
+    { id: "tue2", name: "DB Romanian Deadlift", sets: "3x10-12" },
+    { id: "tue3", name: "DB Walking Lunges", sets: "3x12/leg" },
+    { id: "tue4", name: "DB Calf Raise", sets: "4x15-20" },
+    { id: "tue5", name: "Lying Leg Raises", sets: "3x15" },
+    { id: "tue6", name: "Plank", sets: "3x45s" },
+  ]},
+  3: { name: "Active Recovery", tag: "Walk + Stretch", rest: true, exercises: [
+    { id: "wed1", name: "Brisk Walk", sets: "25-30 min" },
+    { id: "wed2", name: "Full Body Stretch / Mobility", sets: "10-15 min" },
+  ]},
+  4: { name: "Upper Body — Pull", tag: "Back / Biceps / Rear Delts", rest: false, exercises: [
+    { id: "thu1", name: "DB Bent-Over Row", sets: "4x8-10" },
+    { id: "thu2", name: "Single-Arm DB Row", sets: "3x10/side" },
+    { id: "thu3", name: "DB Reverse Fly", sets: "3x15" },
+    { id: "thu4", name: "DB Bicep Curl", sets: "3x12" },
+    { id: "thu5", name: "DB Hammer Curl", sets: "3x12" },
+    { id: "thu6", name: "DB Shrugs", sets: "3x15" },
+  ]},
+  5: { name: "Lower Body B", tag: "Glutes / Hamstrings / Core", rest: false, exercises: [
+    { id: "fri1", name: "DB Bulgarian Split Squat", sets: "3x10/leg" },
+    { id: "fri2", name: "DB Step-Ups", sets: "3x12/leg" },
+    { id: "fri3", name: "DB Sumo Squat", sets: "3x12" },
+    { id: "fri4", name: "DB Stiff-Leg Deadlift", sets: "3x12" },
+    { id: "fri5", name: "DB Loaded Glute Bridge", sets: "3x15" },
+    { id: "fri6", name: "Russian Twists", sets: "3x20" },
+  ]},
+  6: { name: "Full Body Conditioning", tag: "Fat-loss circuit", rest: false, exercises: [
+    { id: "sat1", name: "DB Thrusters", sets: "4x12" },
+    { id: "sat2", name: "Renegade Rows", sets: "3x10/side" },
+    { id: "sat3", name: "DB Squat to Press", sets: "3x12" },
+    { id: "sat4", name: "Burpees", sets: "3x15" },
+    { id: "sat5", name: "Mountain Climbers", sets: "3x30s" },
+    { id: "sat6", name: "Jump Squats", sets: "3x15" },
+  ]},
+  0: { name: "Rest Day", tag: "Recovery", rest: true, exercises: [
+    { id: "sun1", name: "Light Stretch (optional)", sets: "10 min" },
+  ]},
+};
+
+const MEALS = {
+  A: { label: "Plan A", items: [
+    { id: "breakfast", name: "Breakfast", desc: "2 banana, 2 tbsp peanut butter, 1 cup oats, 2 cups protein milk (your shake)", kcal: 1000, p: 37 },
+    { id: "lunch", name: "Lunch", desc: "200g grilled chicken breast, 1 cup rice, salad + olive oil", kcal: 650, p: 50 },
+    { id: "snack", name: "Snack", desc: "200g Greek yogurt, handful almonds", kcal: 350, p: 28 },
+    { id: "dinner", name: "Dinner", desc: "200g chicken thigh, sweet potato, sautéed veg", kcal: 600, p: 45 },
+    { id: "evening", name: "Evening (optional)", desc: "2 boiled eggs or 100g cottage cheese", kcal: 150, p: 15 },
+  ]},
+  B: { label: "Plan B", items: [
+    { id: "breakfast", name: "Breakfast", desc: "1 banana, 1 tbsp peanut butter, 1 cup oats, 2 cups protein milk (lighter shake)", kcal: 550, p: 25 },
+    { id: "lunch", name: "Lunch", desc: "200g lean beef/turkey mince, quinoa, mixed veg", kcal: 650, p: 48 },
+    { id: "snack", name: "Snack", desc: "200g Greek yogurt, 1 apple", kcal: 300, p: 22 },
+    { id: "dinner", name: "Dinner", desc: "Grilled chicken thighs, brown rice, broccoli", kcal: 600, p: 45 },
+    { id: "evening", name: "Evening (optional)", desc: "2 boiled eggs or cottage cheese", kcal: 150, p: 15 },
+  ]},
+};
+const MACRO_TARGET = { kcal: 2485, protein: 180, fat: 70, carbs: 280 };
+const DAY_NAMES = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+
+// ---------- Helpers ----------
+function dKey(d){ return d.toISOString().slice(0,10); }
+function todayKey(){ return dKey(new Date()); }
+function fmtDate(key){ return new Date(key+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}); }
+function addDays(key,n){ const d=new Date(key+"T00:00:00"); d.setDate(d.getDate()+n); return dKey(d); }
+function dayOfWeek(key){ return new Date(key+"T00:00:00").getDay(); }
+function mealPlanFor(key){ return (new Date(key+"T00:00:00").getDate()%2===0) ? MEALS.A : MEALS.B; }
+
+const DEFAULT_PROFILE = { height:183, age:21, startWeight:85, goalWeight:78, startDate: todayKey() };
+function emptyDayLog(){ return { exercises:{}, meals:{}, water:0, weight:null }; }
+
+// ---------- State ----------
+let state = { profile: DEFAULT_PROFILE, logs: {} };
+let tab = "today";
+let viewDate = todayKey();
+let weightInputVal = "";
+
+function load(){
+  try {
+    const raw = localStorage.getItem("cutTrackerData");
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state.profile = parsed.profile || DEFAULT_PROFILE;
+      state.logs = parsed.logs || {};
+    }
+  } catch(e) { /* first run, defaults stand */ }
+}
+function save(){
+  try { localStorage.setItem("cutTrackerData", JSON.stringify(state)); } catch(e) { console.error("save failed", e); }
+}
+function getLog(key){ return state.logs[key] || emptyDayLog(); }
+
+// ---------- Mutations ----------
+function toggleExercise(key, exId){
+  const day = Object.assign(emptyDayLog(), state.logs[key]);
+  day.exercises = Object.assign({}, day.exercises, { [exId]: !day.exercises[exId] });
+  state.logs[key] = day;
+  save(); render();
+}
+function toggleMeal(key, mealId){
+  const day = Object.assign(emptyDayLog(), state.logs[key]);
+  day.meals = Object.assign({}, day.meals, { [mealId]: !day.meals[mealId] });
+  state.logs[key] = day;
+  save(); render();
+}
+function setWater(key, cups){
+  const day = Object.assign(emptyDayLog(), state.logs[key]);
+  day.water = Math.max(0, cups);
+  state.logs[key] = day;
+  save(); render();
+}
+function logWeight(key, val){
+  const num = parseFloat(val);
+  if (isNaN(num) || num<=0) return;
+  const day = Object.assign(emptyDayLog(), state.logs[key]);
+  day.weight = num;
+  state.logs[key] = day;
+  weightInputVal = "";
+  save(); render();
+}
+
+// ---------- Derived ----------
+function weightSeries(){
+  return Object.entries(state.logs)
+    .filter(([,v]) => v.weight)
+    .map(([k,v]) => ({ date:k, weight:v.weight }))
+    .sort((a,b) => a.date > b.date ? 1 : -1);
+}
+function currentWeight(){
+  const s = weightSeries();
+  return s.length ? s[s.length-1].weight : state.profile.startWeight;
+}
+function computeStreak(){
+  let count=0, cursor=todayKey();
+  for (let i=0;i<60;i++){
+    const dow = dayOfWeek(cursor);
+    const plan = SPLIT[dow];
+    const log = getLog(cursor);
+    if (plan.rest) { cursor = addDays(cursor,-1); continue; }
+    const allDone = plan.exercises.every(e => log.exercises[e.id]);
+    if (allDone) { count++; cursor = addDays(cursor,-1); }
+    else { if (cursor===todayKey()) { cursor = addDays(cursor,-1); continue; } break; }
+  }
+  return count;
+}
+function checkIcon(){ return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#12141A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
+
+// ---------- Icons (inline minimal svgs) ----------
+const ICONS = {
+  dumbbell: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round"><path d="M6.5 6.5 17.5 17.5M4 9l3-3M20 15l-3 3M2 12l3-3M22 12l-3 3M9 4l3-3M15 20l3 3"/><rect x="6" y="6" width="3" height="3" rx="0.5" transform="rotate(45 7.5 7.5)"/></svg>`,
+  award: c => `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/></svg>`,
+  calendar: c => `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
+  chevronLeft: c => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>`,
+  chevronRight: c => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>`,
+  utensils: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v11M9 2v20M17 2c-2.2 0-4 3.6-4 8s1.8 8 4 8"/></svg>`,
+  droplet: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><path d="M12 2s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg>`,
+  target: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  flame: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 17a2.5 2.5 0 0 0 2.5-2.5c0-1.4-.8-2-1.5-3-.7 1-1.5 1.6-1.5 3z"/><path d="M12 2c-2 4-5 5-5 10a5 5 0 0 0 10 0c0-1-.5-2-1-3 0 2-1 3-2 3-2 0-2-2-2-4 0-2 1-4 0-6z"/></svg>`,
+  trend: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
+};
+
+// ---------- Render ----------
+function render(){
+  const cw = currentWeight();
+  const totalToLose = state.profile.startWeight - state.profile.goalWeight;
+  const lostSoFar = state.profile.startWeight - cw;
+  const pct = totalToLose>0 ? (lostSoFar/totalToLose)*100 : 0;
+  const targetDate = addDays(state.profile.startDate, 122);
+  const daysLeft = Math.max(0, Math.ceil((new Date(targetDate) - new Date(todayKey()))/86400000));
+  const streak = computeStreak();
+
+  const dow = dayOfWeek(viewDate);
+  const plan = SPLIT[dow];
+  const dayLog = getLog(viewDate);
+  const meals = mealPlanFor(viewDate);
+  const isToday = viewDate === todayKey();
+
+  let html = `
+  <div class="header">
+    <div class="header-top">
+      <h1 class="head-font">CUT PHASE</h1>
+      <span class="pill" style="color:var(--gold);background:var(--gold-soft)">${ICONS.award('#C9A44C')} ${streak} day streak</span>
+    </div>
+    <p class="subtitle">85kg → 78kg · retain the muscle, lose the padding</p>
+    <div class="weight-row">
+      <span class="weight-big num-font">${cw.toFixed(1)}<span> kg</span></span>
+      <span class="subtitle">Goal <span class="num-font" style="color:var(--text)">${state.profile.goalWeight} kg</span></span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,Math.max(0,pct))}%"></div></div>
+    <div class="bar-labels">
+      <span>${lostSoFar>0 ? lostSoFar.toFixed(1)+" kg down" : "Log your weight to start tracking"}</span>
+      <span>${daysLeft} days left</span>
+    </div>
+  </div>
+  <div class="content">`;
+
+  if (tab === "today") {
+    html += `
+    <div class="date-nav">
+      <button class="nav-btn" onclick="viewDate=addDays(viewDate,-1);render()">${ICONS.chevronLeft('#9A9FAA')}</button>
+      <div style="display:flex;align-items:center;gap:6px;font-size:0.9rem;color:${isToday?'var(--text)':'var(--text-dim)'}">${ICONS.calendar('#9A9FAA')} ${isToday ? "Today" : fmtDate(viewDate)}</div>
+      <button class="nav-btn" onclick="viewDate=addDays(viewDate,1);render()">${ICONS.chevronRight('#9A9FAA')}</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title-row">
+        <div>
+          <div class="card-title">${ICONS.dumbbell('#B8352F')} <span class="head-font">${plan.name.toUpperCase()}</span></div>
+          <div class="card-tag">${plan.tag}</div>
+        </div>
+        ${!plan.rest ? `<span class="pill" style="color:var(--success);background:var(--success-soft)">${plan.exercises.filter(e=>dayLog.exercises[e.id]).length}/${plan.exercises.length}</span>` : ''}
+      </div>
+      ${plan.exercises.map(ex => {
+        const done = !!dayLog.exercises[ex.id];
+        return `<button class="item-row ${done?'done':''}" onclick="toggleExercise('${viewDate}','${ex.id}')">
+          <div class="item-left"><div class="checkbox">${done?checkIcon():''}</div><span class="item-name">${ex.name}</span></div>
+          <span class="item-sets num-font">${ex.sets}</span>
+        </button>`;
+      }).join('')}
+    </div>
+
+    <div class="card">
+      <div class="card-title-row">
+        <div class="card-title">${ICONS.utensils('#C9A44C')} <span class="head-font">MEALS</span></div>
+        <span class="pill" style="color:var(--gold);background:var(--gold-soft)">${meals.label}</span>
+      </div>
+      ${meals.items.map(m => {
+        const done = !!dayLog.meals[m.id];
+        return `<button class="item-row ${done?'done':''}" style="align-items:flex-start" onclick="toggleMeal('${viewDate}','${m.id}')">
+          <div class="item-left"><div class="checkbox" style="margin-top:2px">${done?checkIcon():''}</div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;justify-content:space-between"><span class="item-name">${m.name}</span><span class="item-sets num-font">${m.kcal} kcal · ${m.p}p</span></div>
+              <div class="meal-desc">${m.desc}</div>
+            </div>
+          </div>
+        </button>`;
+      }).join('')}
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-dim)">
+        <span>Daily target</span><span class="num-font">${MACRO_TARGET.kcal} kcal · P${MACRO_TARGET.protein} F${MACRO_TARGET.fat} C${MACRO_TARGET.carbs}</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title-row">
+        <div class="card-title">${ICONS.droplet('#5B9FD9')} <span class="head-font">WATER</span></div>
+        <span class="num-font">${dayLog.water}/8 cups</span>
+      </div>
+      <div class="water-grid">
+        ${Array.from({length:8}).map((_,i) => `<button class="water-cup ${i<dayLog.water?'filled':''}" onclick="setWater('${viewDate}', ${i+1===dayLog.water ? i : i+1})"></button>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  if (tab === "plan") {
+    html += `<p style="font-size:0.75rem;color:var(--text-dim);margin-bottom:12px">Home dumbbell split · repeats weekly</p>`;
+    [1,2,3,4,5,6,0].forEach(d => {
+      html += `<div class="card">
+        <div class="card-title-row">
+          <span class="head-font" style="font-size:0.9rem">${DAY_NAMES[d]} · ${SPLIT[d].name.toUpperCase()}</span>
+          ${SPLIT[d].rest ? `<span class="pill" style="color:var(--text-dim);background:var(--surface2)">Rest</span>` : ''}
+        </div>
+        <div class="exercise-tags">${SPLIT[d].exercises.map(ex => `<span class="exercise-tag">${ex.name} · ${ex.sets}</span>`).join('')}</div>
+      </div>`;
+    });
+  }
+
+  if (tab === "progress") {
+    const series = weightSeries();
+    html += `<div class="card">
+      <div class="card-title" style="margin-bottom:12px">${ICONS.trend('#B8352F')} <span class="head-font">WEIGHT TREND</span></div>
+      ${series.length>=2 ? drawChart(series, state.profile.goalWeight) : `<div class="empty-note">Log at least 2 weigh-ins to see your trend.</div>`}
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:12px">${ICONS.target('#C9A44C')} <span class="head-font">LOG TODAY'S WEIGHT</span></div>
+      <div class="weight-input-row">
+        <input type="number" step="0.1" inputmode="decimal" id="weightInput" placeholder="${cw.toFixed(1)}" value="${weightInputVal}" oninput="weightInputVal=this.value" />
+        <button class="save-btn" onclick="logWeight(todayKey(), document.getElementById('weightInput').value)">Save</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:12px">${ICONS.flame('#C9A44C')} <span class="head-font">STATS</span></div>
+      <div class="stats-grid">
+        <div><div class="stat-label">Lost so far</div><div class="stat-value num-font">${lostSoFar.toFixed(1)} kg</div></div>
+        <div><div class="stat-label">Remaining</div><div class="stat-value num-font">${Math.max(0,totalToLose-lostSoFar).toFixed(1)} kg</div></div>
+        <div><div class="stat-label">Target date</div><div class="stat-value num-font">${fmtDate(targetDate)}</div></div>
+        <div><div class="stat-label">Workout streak</div><div class="stat-value num-font">${streak} days</div></div>
+      </div>
+    </div>`;
+  }
+
+  html += `</div>
+  <div class="tabs">
+    <button class="tab-btn ${tab==='today'?'active':''}" onclick="tab='today';render()">${ICONS.dumbbell(tab==='today'?'#B8352F':'#9A9FAA')}<span>Today</span></button>
+    <button class="tab-btn ${tab==='plan'?'active':''}" onclick="tab='plan';render()">${ICONS.calendar(tab==='plan'?'#B8352F':'#9A9FAA')}<span>Plan</span></button>
+    <button class="tab-btn ${tab==='progress'?'active':''}" onclick="tab='progress';render()">${ICONS.trend(tab==='progress'?'#B8352F':'#9A9FAA')}<span>Progress</span></button>
+  </div>`;
+
+  document.getElementById('app').innerHTML = html;
+}
+
+function drawChart(series, goal){
+  const w = 320, h = 140, pad = 24;
+  const weights = series.map(s=>s.weight);
+  const min = Math.min(...weights, goal) - 1;
+  const max = Math.max(...weights, goal) + 1;
+  const x = i => pad + (i/(series.length-1)) * (w - pad*2);
+  const y = v => h - pad - ((v-min)/(max-min)) * (h - pad*2);
+  const points = series.map((s,i) => `${x(i)},${y(s.weight)}`).join(' ');
+  const goalY = y(goal);
+  const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="3" fill="#B8352F"/>`).join('');
+  return `<svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
+    <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#C9A44C" stroke-dasharray="4 4"/>
+    <text x="${w-pad+2}" y="${goalY+3}" fill="#C9A44C">Goal</text>
+    <polyline points="${points}" fill="none" stroke="#B8352F" stroke-width="2.5"/>
+    ${dots}
+  </svg>`;
+}
+
+load();
+render();
+</script>
+</body>
+</html>

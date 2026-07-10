@@ -255,7 +255,12 @@ const MACRO_TARGET = { kcal: 2485, protein: 180, fat: 70, carbs: 280 };
 const DAY_NAMES = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
 // ============ Helpers ============
-function dKey(d){ return d.toISOString().slice(0,10); }
+function dKey(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 function todayKey(){ return dKey(new Date()); }
 function fmtDate(key){ return new Date(key+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}); }
 function fmtShort(key){ return new Date(key+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"}); }

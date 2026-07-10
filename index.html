@@ -98,11 +98,32 @@
   .streak-chip b { color: var(--chalk); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
   .flame-pulse { animation: pulseGlow 1.6s ease-in-out infinite; filter: drop-shadow(0 0 4px var(--ember-glow)); }
 
-  .gauge-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin: 14px 0 0; animation: fadeSlide 0.5s ease; }
-  .gauge-readout { position: absolute; top: 58%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
-  .gauge-weight { font-size: 2.9rem; font-weight: 800; line-height: 1; letter-spacing: -0.01em; }
-  .gauge-weight .unit { font-size: 1rem; color: var(--slate); font-weight: 500; margin-left: 3px; }
-  .gauge-sub { font-size: 0.68rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px; font-weight: 600; }
+  .mass-row { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 16px; animation: fadeSlide 0.5s ease; }
+  .mass-label { font-size: 0.66rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 4px; }
+  .mass-value { font-size: 2.7rem; font-weight: 800; line-height: 1; letter-spacing: -0.01em; }
+  .mass-value .unit { font-size: 1rem; color: var(--slate); font-weight: 500; margin-left: 3px; }
+
+  .progress-linear {
+    position: relative; width: 100%; height: 11px; border-radius: 20px; margin-top: 14px;
+    background: rgba(255,255,255,0.07); overflow: visible; border: 1px solid var(--border);
+  }
+  .progress-fill-linear {
+    position: relative; height: 100%; border-radius: 20px; min-width: 11px;
+    background: linear-gradient(90deg, var(--ember), var(--gold) 70%, var(--temper-2));
+    box-shadow: 0 0 16px var(--ember-glow);
+    transition: width 0.8s cubic-bezier(.22,1,.36,1);
+  }
+  .progress-fill-linear::after {
+    content: ''; position: absolute; inset: 0; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
+    background-size: 200px 100%; animation: shimmer 2.6s infinite linear;
+  }
+  .progress-spark {
+    position: absolute; right: -5px; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; border-radius: 50%; background: var(--chalk);
+    box-shadow: 0 0 12px 4px var(--ember-glow); border: 2px solid var(--bg);
+  }
+  .progress-summary { display: flex; justify-content: space-between; margin-top: 9px; font-size: 0.76rem; color: var(--slate); font-weight: 600; }
 
   .readout-row { display: flex; gap: 8px; margin-top: 14px; }
   .readout-cell {
@@ -414,47 +435,6 @@ const ICON = {
   flame: c => `<svg width="13" height="13" viewBox="0 0 24 24" fill="${c}" stroke="none"><path d="M12 2c-2 4-5 5-5 10a5 5 0 0 0 10 0c0-1-.5-2-1-3 0 2-1 3-2 3-2 0-2-2-2-4 0-2 1-4 0-6z"/></svg>`,
 };
 
-// ============ Gauge ============
-function polar(cx, cy, r, thetaDeg){
-  const rad = thetaDeg * Math.PI / 180;
-  return { x: cx + r*Math.cos(rad), y: cy - r*Math.sin(rad) };
-}
-function arcPath(cx, cy, r, thetaStart, thetaEnd){
-  const p1 = polar(cx,cy,r,thetaStart);
-  const p2 = polar(cx,cy,r,thetaEnd);
-  const span = thetaStart - thetaEnd;
-  const largeArc = span > 180 ? 1 : 0;
-  return `M ${p1.x} ${p1.y} A ${r} ${r} 0 ${largeArc} 1 ${p2.x} ${p2.y}`;
-}
-function drawGauge(current, start, goal){
-  const cx = 150, cy = 118, r = 106;
-  const span = start - goal;
-  const fraction = span > 0 ? Math.min(1, Math.max(0, (start-current)/span)) : 0;
-  const thetaCurrent = 180 - fraction*180;
-  const needle = polar(cx, cy, r, thetaCurrent);
-  const track = arcPath(cx, cy, r, 180, 0);
-  const fill = arcPath(cx, cy, r, 180, thetaCurrent);
-  return `
-  <svg viewBox="0 0 300 148" width="100%" style="max-width:360px;overflow:visible">
-    <defs>
-      <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#FF6B35"/>
-        <stop offset="50%" stop-color="#FFC145"/>
-        <stop offset="100%" stop-color="#22D3EE"/>
-      </linearGradient>
-      <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-        <feGaussianBlur stdDeviation="6" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
-    </defs>
-    <path d="${track}" stroke="rgba(255,255,255,0.08)" stroke-width="14" fill="none" stroke-linecap="round"/>
-    <path d="${fill}" stroke="url(#gaugeGrad)" stroke-width="14" fill="none" stroke-linecap="round" filter="url(#glow)"/>
-    <circle cx="${needle.x}" cy="${needle.y}" r="8" fill="#F7F5F1" stroke="#0D0E11" stroke-width="3" filter="url(#glow)"/>
-    <text x="18" y="140" fill="#62656E" font-size="10" font-weight="600">${start}kg</text>
-    <text x="282" y="140" fill="#62656E" font-size="10" font-weight="600" text-anchor="end">${goal}kg</text>
-  </svg>`;
-}
-
 // ============ Heatmap ============
 function drawHeatmap(){
   const weeks = 12, cell = 11, gap = 3;
@@ -499,7 +479,7 @@ function drawHeatmap(){
 }
 
 function drawTrend(series, goal){
-  const w = 320, h = 132, pad = 22;
+  const w = 320, h = 132, pad = 26;
   const weights = series.map(s=>s.weight);
   const min = Math.min(...weights, goal) - 1;
   const max = Math.max(...weights, goal) + 1;
@@ -509,6 +489,14 @@ function drawTrend(series, goal){
   const areaPoints = `${x(0)},${h-pad} ${points} ${x(series.length-1)},${h-pad}`;
   const goalY = y(goal);
   const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="3.2" fill="#FF6B35" stroke="#0D0E11" stroke-width="1.5"/>`).join('');
+  const axisSteps = 3;
+  let axisLines = '';
+  for (let i=0; i<=axisSteps; i++){
+    const val = min + (max-min)*(i/axisSteps);
+    const yy = y(val);
+    axisLines += `<line x1="${pad}" y1="${yy}" x2="${w-pad}" y2="${yy}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    axisLines += `<text x="2" y="${yy+3}" fill="#62656E" font-size="8">${val.toFixed(0)}</text>`;
+  }
   return `<svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
     <defs>
       <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
@@ -520,9 +508,11 @@ function drawTrend(series, goal){
         <stop offset="100%" stop-color="#22D3EE"/>
       </linearGradient>
     </defs>
+    ${axisLines}
     <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#22D3EE" stroke-dasharray="4 3" stroke-width="1.5"/>
     <text x="${w-pad+2}" y="${goalY+3}" fill="#22D3EE" font-size="9" font-weight="700">GOAL</text>
     <polygon points="${areaPoints}" fill="url(#trendFill)"/>
+
     <polyline points="${points}" fill="none" stroke="url(#lineGrad)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
     ${dots}
   </svg>`;
@@ -554,16 +544,29 @@ function render(){
       <div class="streak-chip"><span class="flame-pulse" style="display:flex">${ICON.flame('#FF6B35')}</span> <b>${streak}</b>&nbsp;day streak</div>
     </div>
 
-    <div class="gauge-wrap">
-      ${drawGauge(cw, state.profile.startWeight, state.profile.goalWeight)}
-      <div class="gauge-readout">
-        <div class="gauge-weight mono">${cw.toFixed(1)}<span class="unit">kg</span></div>
-        <div class="gauge-sub">${lostSoFar>0 ? lostSoFar.toFixed(1)+' kg tempered off' : 'log a weigh-in to begin'}</div>
+    <div class="mass-row">
+      <div class="mass-block">
+        <div class="mass-label">Current Mass</div>
+        <div class="mass-value mono">${cw.toFixed(1)}<span class="unit">kg</span></div>
+      </div>
+      <div class="mass-block" style="text-align:right">
+        <div class="mass-label">Target</div>
+        <div class="mass-value mono" style="color:var(--gold)">${state.profile.goalWeight.toFixed(1)}<span class="unit">kg</span></div>
       </div>
     </div>
 
+    <div class="progress-linear">
+      <div class="progress-fill-linear" style="width:${Math.min(100,Math.max(0,(lostSoFar/totalToLose)*100))}%">
+        <span class="progress-spark"></span>
+      </div>
+    </div>
+    <div class="progress-summary">
+      <span><b class="mono" style="color:var(--ember-2)">${Math.max(0,Math.min(100,(lostSoFar/totalToLose)*100)).toFixed(0)}%</b> tempered</span>
+      <span class="mono">${daysLeft}<span style="color:var(--slate)">d remaining</span></span>
+    </div>
+
     <div class="readout-row">
-      <div class="readout-cell"><div class="readout-val" style="color:var(--ember-2)">${daysLeft}</div><div class="readout-label">Days Left</div></div>
+      <div class="readout-cell"><div class="readout-val" style="color:var(--ember-2)">${lostSoFar.toFixed(1)}</div><div class="readout-label">Kg Lost</div></div>
       <div class="readout-cell"><div class="readout-val" style="color:var(--gold)">${Math.max(0,(totalToLose-lostSoFar)).toFixed(1)}</div><div class="readout-label">Kg To Go</div></div>
       <div class="readout-cell"><div class="readout-val" style="color:var(--temper-2)">${wAvg ? wAvg.toFixed(1) : '—'}</div><div class="readout-label">7d Avg</div></div>
     </div>
@@ -636,11 +639,13 @@ function render(){
 
   if (tab === "plan") {
     html += `<p style="font-size:0.73rem;color:var(--slate);margin-bottom:13px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600">Home dumbbell split · repeats weekly</p>`;
+    const todayDow = dayOfWeek(todayKey());
     [1,2,3,4,5,6,0].forEach(d => {
-      html += `<div class="card">
+      const isTodayCard = d === todayDow;
+      html += `<div class="card" style="${isTodayCard ? 'border-color:var(--ember);box-shadow:0 0 0 1px var(--ember), 0 8px 28px rgba(255,107,53,0.18);' : ''}">
         <div class="card-title-row" style="margin-bottom:9px">
-          <span class="disp" style="font-size:1.1rem">${DAY_NAMES[d]} · ${SPLIT[d].name.toUpperCase()}</span>
-          ${SPLIT[d].rest ? `<span class="pill" style="color:var(--slate);background:var(--surface2);border-color:var(--border)">Rest</span>` : ''}
+          <span class="disp" style="font-size:1.1rem;${isTodayCard?'color:var(--ember-2)':''}">${DAY_NAMES[d]} · ${SPLIT[d].name.toUpperCase()}</span>
+          ${isTodayCard ? `<span class="pill" style="color:#1A1000;background:linear-gradient(135deg, var(--ember), var(--gold));border-color:transparent;font-weight:800">TODAY</span>` : (SPLIT[d].rest ? `<span class="pill" style="color:var(--slate);background:var(--surface2);border-color:var(--border)">Rest</span>` : '')}
         </div>
         <div class="exercise-tags">${SPLIT[d].exercises.map(ex => `<span class="exercise-tag">${ex.name} · ${ex.sets}</span>`).join('')}</div>
       </div>`;

@@ -51,33 +51,21 @@
   .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
 
   /* ---- Header / Gauge ---- */
-  .header {
-    padding: 22px 18px 8px;
-    position: relative;
-  }
-  .eyebrow {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;
-  }
+  .header { padding: 22px 18px 8px; position: relative; }
+  .eyebrow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
   .brand { display: flex; align-items: center; gap: 8px; }
-  .brand-mark {
-    width: 22px; height: 22px; border-radius: 5px; background: var(--ember-soft);
-    display: flex; align-items: center; justify-content: center; border: 1px solid var(--ember);
-  }
+  .brand-mark { width: 22px; height: 22px; border-radius: 5px; background: var(--ember-soft); display: flex; align-items: center; justify-content: center; border: 1px solid var(--ember); }
   .brand-title { font-size: 1.4rem; line-height: 1; }
-  .streak-chip {
-    display: flex; align-items: center; gap: 5px; font-size: 0.7rem; padding: 4px 9px;
-    border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate);
-  }
+  .header-actions { display: flex; align-items: center; gap: 8px; }
+  .streak-chip { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; padding: 4px 9px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate); }
   .streak-chip b { color: var(--chalk); font-family: 'JetBrains Mono', monospace; }
-  .streak-flame { color: var(--ember); }
+  .icon-btn { width: 28px; height: 28px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
 
   .gauge-wrap { position: relative; display: flex; flex-direction: column; align-items: center; margin: 10px 0 0; }
   .gauge-readout { position: absolute; top: 58%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
   .gauge-weight { font-size: 2.6rem; font-weight: 700; line-height: 1; }
   .gauge-weight .unit { font-size: 0.95rem; color: var(--slate); font-weight: 500; margin-left: 2px; }
   .gauge-sub { font-size: 0.68rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
-  .gauge-ends { display: flex; justify-content: space-between; width: 100%; padding: 0 10px; margin-top: -6px; }
-  .gauge-end { font-size: 0.65rem; color: var(--slate-dim); font-family: 'JetBrains Mono', monospace; }
 
   .readout-row { display: flex; margin-top: 10px; border-top: 1px solid var(--border); }
   .readout-cell { flex: 1; text-align: center; padding: 10px 4px; border-right: 1px solid var(--border); }
@@ -87,44 +75,24 @@
 
   /* ---- Tabs ---- */
   .content { padding: 16px; }
-  .tabs {
-    position: fixed; bottom: 0; left: 0; right: 0; display: flex;
-    background: var(--surface); border-top: 1px solid var(--border);
-    padding-bottom: env(safe-area-inset-bottom);
-  }
-  .tab-btn {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 11px 0; background: none; border: none; color: var(--slate-dim); font-size: 0.66rem;
-    text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Inter', sans-serif;
-  }
+  .tabs { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--surface); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); z-index: 20; }
+  .tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 11px 0; background: none; border: none; color: var(--slate-dim); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; }
   .tab-btn.active { color: var(--ember); }
   .tab-btn.active svg { stroke: var(--ember) !important; }
 
   /* ---- Cards ---- */
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-top-color: var(--border-light);
-    border-radius: 14px; padding: 16px; margin-bottom: 12px; position: relative;
-  }
-  .rivet { position: absolute; width: 5px; height: 5px; border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #4a4c52, #202124); top: 10px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-top-color: var(--border-light); border-radius: 14px; padding: 16px; margin-bottom: 12px; position: relative; }
+  .rivet { position: absolute; width: 5px; height: 5px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #4a4c52, #202124); top: 10px; }
   .rivet.tl { left: 10px; } .rivet.tr { right: 10px; }
   .card-title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
   .card-title { display: flex; align-items: center; gap: 8px; font-size: 1.15rem; }
   .card-tag { font-size: 0.72rem; color: var(--slate); margin-left: 24px; margin-top: 1px; }
   .pill { padding: 3px 10px; border-radius: 6px; font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; border: 1px solid transparent; }
 
-  .item-row {
-    width: 100%; display: flex; align-items: center; justify-content: space-between;
-    padding: 11px 12px; border-radius: 8px; background: var(--surface2);
-    border-left: 2px solid var(--border); margin-bottom: 7px; cursor: pointer;
-    text-align: left; color: var(--chalk); font-size: 0.9rem; transition: background 0.15s, border-color 0.15s;
-  }
+  .item-row { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 11px 12px; border-radius: 8px; background: var(--surface2); border-left: 2px solid var(--border); margin-bottom: 7px; cursor: pointer; text-align: left; color: var(--chalk); font-size: 0.9rem; transition: background 0.15s, border-color 0.15s; }
   .item-row.done { background: var(--verdigris-soft); border-left-color: var(--verdigris); }
   .item-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-  .checkbox {
-    width: 19px; height: 19px; border-radius: 4px; border: 1.5px solid var(--slate-dim);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--surface3);
-  }
+  .checkbox { width: 19px; height: 19px; border-radius: 4px; border: 1.5px solid var(--slate-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--surface3); }
   .item-row.done .checkbox { background: var(--verdigris); border-color: var(--verdigris); }
   .item-row.done .item-name { text-decoration: line-through; color: var(--slate); }
   .item-sets { font-size: 0.72rem; color: var(--slate); flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
@@ -139,25 +107,19 @@
   .water-cup.filled { background: var(--temper); border-color: var(--temper); }
 
   .energy-row { display: flex; gap: 8px; margin-top: 4px; }
-  .energy-dot { flex: 1; height: 34px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--slate); cursor: pointer; }
+  .energy-dot { flex: 1; height: 34px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--slate); cursor: pointer; }
   .energy-dot.active { background: var(--ember-soft); border-color: var(--ember); color: var(--chalk); font-weight: 600; }
 
   .exercise-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .exercise-tag { font-size: 0.72rem; padding: 5px 9px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate); font-family: 'JetBrains Mono', monospace; }
 
-  input[type=number], input[type=text] {
-    flex: 1; padding: 10px 12px; border-radius: 8px; background: var(--surface2);
-    border: 1px solid var(--border); color: var(--chalk); font-size: 0.9rem; font-family: 'JetBrains Mono', monospace;
-  }
+  input[type=number], input[type=text], input[type=password] { flex: 1; padding: 10px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--chalk); font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; }
   input::placeholder { color: var(--slate-dim); }
   .input-row { display: flex; gap: 8px; }
-  .btn {
-    padding: 10px 16px; border-radius: 8px; border: none; font-weight: 700; font-size: 0.82rem;
-    text-transform: uppercase; letter-spacing: 0.03em; font-family: 'Inter', sans-serif; cursor: pointer;
-  }
+  .btn { padding: 10px 16px; border-radius: 8px; border: none; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.03em; font-family: 'Inter', sans-serif; cursor: pointer; }
   .btn-ember { background: var(--ember); color: #1A1B1E; }
   .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--slate); }
+  .btn:disabled { opacity: 0.5; }
 
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; }
@@ -176,6 +138,22 @@
   .measure-history { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
   .measure-row { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 8px 10px; background: var(--surface2); border-radius: 8px; }
   .measure-row .d { color: var(--slate); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; }
+
+  /* ---- Coach ---- */
+  .key-setup { display: flex; flex-direction: column; gap: 10px; }
+  .key-note { font-size: 0.76rem; color: var(--slate); line-height: 1.5; }
+  .key-note a { color: var(--temper); }
+  .chat-scroll { display: flex; flex-direction: column; gap: 10px; max-height: 55vh; overflow-y: auto; padding: 2px 2px 4px; margin-bottom: 10px; }
+  .msg { max-width: 86%; padding: 9px 12px; border-radius: 12px; font-size: 0.86rem; line-height: 1.45; }
+  .msg.user { align-self: flex-end; background: var(--ember-soft); border: 1px solid var(--ember); border-bottom-right-radius: 3px; }
+  .msg.assistant { align-self: flex-start; background: var(--surface2); border: 1px solid var(--border); border-bottom-left-radius: 3px; white-space: pre-wrap; }
+  .msg.typing { color: var(--slate); font-style: italic; }
+  .chat-input-row { display: flex; gap: 8px; align-items: flex-end; }
+  .chat-input-row textarea { flex: 1; padding: 10px 12px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--chalk); font-size: 0.88rem; font-family: 'Inter', sans-serif; resize: none; max-height: 90px; }
+  .send-btn { width: 40px; height: 40px; border-radius: 8px; background: var(--ember); border: none; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .send-btn:disabled { opacity: 0.4; }
+  .suggestion-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .suggestion-chip { font-size: 0.72rem; padding: 6px 10px; border-radius: 20px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate); }
 
   svg text { font-family: 'JetBrains Mono', monospace; }
 </style>
@@ -253,6 +231,7 @@ const MEALS = {
 };
 const MACRO_TARGET = { kcal: 2485, protein: 180, fat: 70, carbs: 280 };
 const DAY_NAMES = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+const COACH_MODEL = "claude-sonnet-5";
 
 // ============ Helpers ============
 function dKey(d){
@@ -267,6 +246,7 @@ function fmtShort(key){ return new Date(key+"T00:00:00").toLocaleDateString(unde
 function addDays(key,n){ const d=new Date(key+"T00:00:00"); d.setDate(d.getDate()+n); return dKey(d); }
 function dayOfWeek(key){ return new Date(key+"T00:00:00").getDay(); }
 function mealPlanFor(key){ return (new Date(key+"T00:00:00").getDate()%2===0) ? MEALS.A : MEALS.B; }
+function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 const DEFAULT_PROFILE = { height:183, age:21, startWeight:85, goalWeight:78, startDate: todayKey() };
 function emptyDayLog(){ return { exercises:{}, meals:{}, water:0, weight:null, energy:null }; }
@@ -275,6 +255,10 @@ function emptyDayLog(){ return { exercises:{}, meals:{}, water:0, weight:null, e
 let state = { profile: DEFAULT_PROFILE, logs: {}, measurements: [] };
 let tab = "today";
 let viewDate = todayKey();
+let apiKey = localStorage.getItem("cutTrackerApiKey") || "";
+let chatMessages = [];
+let chatBusy = false;
+let showKeyInput = false;
 
 function load(){
   try {
@@ -286,9 +270,16 @@ function load(){
       state.measurements = parsed.measurements || [];
     }
   } catch(e) {}
+  try {
+    const rawChat = localStorage.getItem("cutTrackerChat");
+    if (rawChat) chatMessages = JSON.parse(rawChat);
+  } catch(e) {}
 }
 function save(){
   try { localStorage.setItem("cutTrackerData", JSON.stringify(state)); } catch(e) { console.error(e); }
+}
+function saveChat(){
+  try { localStorage.setItem("cutTrackerChat", JSON.stringify(chatMessages.slice(-30))); } catch(e) {}
 }
 function getLog(key){ return state.logs[key] || emptyDayLog(); }
 
@@ -375,6 +366,9 @@ const ICON = {
   trend: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
   ruler: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7v3M11 7v3M15 7v3M19 7v3"/></svg>`,
   flame: c => `<svg width="12" height="12" viewBox="0 0 24 24" fill="${c}" stroke="none"><path d="M12 2c-2 4-5 5-5 10a5 5 0 0 0 10 0c0-1-.5-2-1-3 0 2-1 3-2 3-2 0-2-2-2-4 0-2 1-4 0-6z"/></svg>`,
+  spark: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/><circle cx="12" cy="12" r="3"/></svg>`,
+  gear: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.6V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.6 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1z"/></svg>`,
+  send: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`,
 };
 
 // ============ Gauge ============
@@ -419,7 +413,6 @@ function drawHeatmap(){
   const weeks = 12, cell = 11, gap = 3;
   const today = todayKey();
   let startCursor = addDays(today, -(weeks*7-1));
-  // align to Sunday
   while (dayOfWeek(startCursor) !== 0) startCursor = addDays(startCursor, -1);
   let cols = [];
   let cursor = startCursor;
@@ -458,6 +451,108 @@ function drawHeatmap(){
   return `<div class="heatmap-scroll"><svg viewBox="0 0 ${svgW} ${svgH}" width="${Math.max(svgW,280)}" height="${svgH}">${rects}</svg></div>`;
 }
 
+function drawTrend(series, goal){
+  const w = 320, h = 130, pad = 22;
+  const weights = series.map(s=>s.weight);
+  const min = Math.min(...weights, goal) - 1;
+  const max = Math.max(...weights, goal) + 1;
+  const x = i => pad + (i/(series.length-1)) * (w - pad*2);
+  const y = v => h - pad - ((v-min)/(max-min)) * (h - pad*2);
+  const points = series.map((s,i) => `${x(i)},${y(s.weight)}`).join(' ');
+  const areaPoints = `${x(0)},${h-pad} ${points} ${x(series.length-1)},${h-pad}`;
+  const goalY = y(goal);
+  const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="2.8" fill="#C1622D"/>`).join('');
+  return `<svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
+    <defs>
+      <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#C1622D" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#C1622D" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#4A7A96" stroke-dasharray="4 3"/>
+    <text x="${w-pad+2}" y="${goalY+3}" fill="#4A7A96" font-size="9">GOAL</text>
+    <polygon points="${areaPoints}" fill="url(#trendFill)"/>
+    <polyline points="${points}" fill="none" stroke="#C1622D" stroke-width="2.2"/>
+    ${dots}
+  </svg>`;
+}
+
+// ============ Coach ============
+function saveApiKey(){
+  const val = document.getElementById('apiKeyInput').value.trim();
+  if (!val) return;
+  apiKey = val;
+  localStorage.setItem("cutTrackerApiKey", apiKey);
+  showKeyInput = false;
+  render();
+}
+function clearApiKey(){
+  apiKey = "";
+  localStorage.removeItem("cutTrackerApiKey");
+  render();
+}
+function buildCoachSystemPrompt(){
+  const cw = currentWeight();
+  const dow = dayOfWeek(todayKey());
+  const plan = SPLIT[dow];
+  const meals = mealPlanFor(todayKey());
+  return `You are the built-in coach inside "Temper", a personal cut-phase fitness tracker app. Speak directly to the user in a concise, knowledgeable, encouraging but honest tone — like a good coach, not a generic chatbot. Keep answers short and practical (a few sentences to a short list, not essays) unless the user clearly wants depth.
+
+User's context:
+- 21 years old, 183cm, home dumbbell training only, no gym access
+- Current weight: ${cw}kg. Start: ${state.profile.startWeight}kg. Goal: ${state.profile.goalWeight}kg
+- Diet: non-vegetarian, no fish, no protein powder (whole-food based)
+- Daily macro target: ${MACRO_TARGET.kcal} kcal, ${MACRO_TARGET.protein}g protein, ${MACRO_TARGET.fat}g fat, ${MACRO_TARGET.carbs}g carbs
+- Today's workout (${DAY_NAMES[dow]}): ${plan.name} — ${plan.exercises.map(e=>e.name+' '+e.sets).join(', ')}
+- Today's meal plan (${meals.label}): ${meals.items.map(m=>m.name+': '+m.desc).join(' | ')}
+
+Answer nutrition and training questions with this context in mind. If asked something outside fitness/nutrition scope, gently redirect. Don't give medical diagnoses; suggest seeing a doctor for anything that sounds like an injury or medical issue.`;
+}
+async function sendChatMessage(){
+  const ta = document.getElementById('chatInput');
+  const text = ta.value.trim();
+  if (!text || chatBusy) return;
+  chatMessages.push({ role: 'user', content: text });
+  ta.value = '';
+  chatBusy = true;
+  saveChat(); render();
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: COACH_MODEL,
+        max_tokens: 700,
+        system: buildCoachSystemPrompt(),
+        messages: chatMessages.map(m => ({ role: m.role, content: m.content })),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      const errMsg = (data && data.error && data.error.message) ? data.error.message : `Request failed (${res.status})`;
+      chatMessages.push({ role: 'assistant', content: `⚠ ${errMsg}` });
+    } else {
+      const textBlock = (data.content || []).find(b => b.type === 'text');
+      chatMessages.push({ role: 'assistant', content: textBlock ? textBlock.text : "No response." });
+    }
+  } catch (e) {
+    chatMessages.push({ role: 'assistant', content: `⚠ Couldn't reach the API (${e.message}). Check your connection or key.` });
+  }
+  chatBusy = false;
+  saveChat(); render();
+  const scroller = document.getElementById('chatScroll');
+  if (scroller) scroller.scrollTop = scroller.scrollHeight;
+}
+function askSuggestion(text){
+  document.getElementById('chatInput').value = text;
+  sendChatMessage();
+}
+
 // ============ Render ============
 function render(){
   const cw = currentWeight();
@@ -481,7 +576,9 @@ function render(){
         <div class="brand-mark">${ICON.hammer('#C1622D')}</div>
         <span class="disp brand-title">TEMPER</span>
       </div>
-      <div class="streak-chip">${ICON.flame('#C1622D')} <b class="mono">${streak}</b> day streak</div>
+      <div class="header-actions">
+        <div class="streak-chip">${ICON.flame('#C1622D')} <b class="mono">${streak}</b> day streak</div>
+      </div>
     </div>
 
     <div class="gauge-wrap">
@@ -581,6 +678,48 @@ function render(){
     });
   }
 
+  if (tab === "coach") {
+    if (!apiKey || showKeyInput) {
+      html += `
+      <div class="card">
+        <span class="rivet tl"></span><span class="rivet tr"></span>
+        <div class="card-title" style="margin-bottom:10px">${ICON.spark('#C1622D')} <span class="disp">AI COACH SETUP</span></div>
+        <div class="key-setup">
+          <p class="key-note">This calls the Claude API directly from your browser using your own API key — nothing goes through a server, and the key only lives on this device. Get a key at
+            <a href="https://platform.claude.com" target="_blank" rel="noopener">platform.claude.com</a> (Settings → API Keys). It's billed to your own account, so keep an eye on usage.</p>
+          <div class="input-row">
+            <input type="password" id="apiKeyInput" placeholder="sk-ant-..." />
+            <button class="btn btn-ember" onclick="saveApiKey()">Save</button>
+          </div>
+        </div>
+      </div>`;
+    } else {
+      html += `
+      <div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px">
+        <span style="font-size:0.76rem;color:var(--slate)">${ICON.spark('#C1622D')} Coach is connected</span>
+        <button class="icon-btn" onclick="showKeyInput=true;render()">${ICON.gear('#8B8D92')}</button>
+      </div>
+      <div class="card">
+        <span class="rivet tl"></span><span class="rivet tr"></span>
+        ${chatMessages.length === 0 ? `
+          <div class="empty-note" style="padding:6px 0 14px">Ask anything about your training or nutrition — the coach already knows today's plan and macros.</div>
+          <div class="suggestion-row">
+            <button class="suggestion-chip" onclick="askSuggestion('Is today\\'s meal plan enough protein for a training day?')">Enough protein today?</button>
+            <button class="suggestion-chip" onclick="askSuggestion('Can I swap an exercise if I don\\'t feel like doing it?')">Swap an exercise</button>
+            <button class="suggestion-chip" onclick="askSuggestion('My weight hasn\\'t moved in 2 weeks, what should I change?')">Weight stalled 2 weeks</button>
+          </div>` : ''}
+        <div class="chat-scroll" id="chatScroll">
+          ${chatMessages.map(m => `<div class="msg ${m.role}">${escapeHtml(m.content)}</div>`).join('')}
+          ${chatBusy ? `<div class="msg assistant typing">thinking…</div>` : ''}
+        </div>
+        <div class="chat-input-row">
+          <textarea id="chatInput" rows="1" placeholder="Ask about training or nutrition..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}"></textarea>
+          <button class="send-btn" ${chatBusy?'disabled':''} onclick="sendChatMessage()">${ICON.send('#1A1B1E')}</button>
+        </div>
+      </div>`;
+    }
+  }
+
   if (tab === "progress") {
     const series = weightSeries();
     html += `
@@ -643,36 +782,13 @@ function render(){
   <div class="tabs">
     <button class="tab-btn ${tab==='today'?'active':''}" onclick="tab='today';render()">${ICON.hammer(tab==='today'?'#C1622D':'#5C5E63')}<span>Today</span></button>
     <button class="tab-btn ${tab==='plan'?'active':''}" onclick="tab='plan';render()">${ICON.calendar(tab==='plan'?'#C1622D':'#5C5E63')}<span>Plan</span></button>
+    <button class="tab-btn ${tab==='coach'?'active':''}" onclick="tab='coach';render()">${ICON.spark(tab==='coach'?'#C1622D':'#5C5E63')}<span>Coach</span></button>
     <button class="tab-btn ${tab==='progress'?'active':''}" onclick="tab='progress';render()">${ICON.trend(tab==='progress'?'#C1622D':'#5C5E63')}<span>Progress</span></button>
   </div>`;
 
   document.getElementById('app').innerHTML = html;
-}
-
-function drawTrend(series, goal){
-  const w = 320, h = 130, pad = 22;
-  const weights = series.map(s=>s.weight);
-  const min = Math.min(...weights, goal) - 1;
-  const max = Math.max(...weights, goal) + 1;
-  const x = i => pad + (i/(series.length-1)) * (w - pad*2);
-  const y = v => h - pad - ((v-min)/(max-min)) * (h - pad*2);
-  const points = series.map((s,i) => `${x(i)},${y(s.weight)}`).join(' ');
-  const areaPoints = `${x(0)},${h-pad} ${points} ${x(series.length-1)},${h-pad}`;
-  const goalY = y(goal);
-  const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="2.8" fill="#C1622D"/>`).join('');
-  return `<svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
-    <defs>
-      <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#C1622D" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#C1622D" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#4A7A96" stroke-dasharray="4 3"/>
-    <text x="${w-pad+2}" y="${goalY+3}" fill="#4A7A96" font-size="9">GOAL</text>
-    <polygon points="${areaPoints}" fill="url(#trendFill)"/>
-    <polyline points="${points}" fill="none" stroke="#C1622D" stroke-width="2.2"/>
-    ${dots}
-  </svg>`;
+  const scroller = document.getElementById('chatScroll');
+  if (scroller) scroller.scrollTop = scroller.scrollHeight;
 }
 
 load();

@@ -291,7 +291,15 @@ function setEnergy(key, val){
 }
 function logWeight(key, val){
   const num = parseFloat(val);
-  if (isNaN(num) || num<=0) return;
+  if (isNaN(num) || num<=0) {
+    const input = document.getElementById('weightInput');
+    if (input) {
+      input.style.borderColor = '#E8492A';
+      input.placeholder = 'Type a number first';
+      setTimeout(() => { input.style.borderColor = ''; }, 1500);
+    }
+    return;
+  }
   const day = Object.assign(emptyDayLog(), state.logs[key]);
   day.weight = num;
   state.logs[key] = day; save(); render();
@@ -575,6 +583,9 @@ function render(){
         <input type="number" step="0.1" inputmode="decimal" id="weightInput" placeholder="e.g. ${cw.toFixed(1)}" />
         <button class="btn btn-ember btn-icon" onclick="logWeight(todayKey(), document.getElementById('weightInput').value)">${ICON.save('#1A1000')}</button>
       </div>
+      ${series.length ? `<div class="measure-history" style="margin-top:11px">
+        ${series.slice(-5).reverse().map(s => `<div class="measure-row"><span class="d">${fmtShort(s.date)}${s.date===todayKey()?' · today':''}</span><span>${s.weight.toFixed(1)} kg</span></div>`).join('')}
+      </div>` : `<div class="card-tag" style="margin-top:10px">No weigh-ins logged yet — enter one above.</div>`}
     </div>
 
     <div class="stats-grid" style="margin-bottom:12px">
@@ -592,7 +603,7 @@ function render(){
 
     <div class="card">
       <div class="card-title" style="margin-bottom:12px">${ICON.trend('#E5A93C')} TREND</div>
-      ${series.length>=2 ? drawTrend(series, state.profile.goalWeight) : `<div class="empty-note">Log at least 2 weigh-ins to see your trend.</div>`}
+      ${series.length>=2 ? drawTrend(series, state.profile.goalWeight) : `<div class="empty-note">${series.length===0 ? 'No weigh-ins logged yet.' : `You've logged ${series.length} weigh-in (${series[0].date===todayKey()?'today':fmtShort(series[0].date)}). Log on one more day to see your trend line.`}</div>`}
     </div>
 
     <div class="card">

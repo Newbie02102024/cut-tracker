@@ -3,290 +3,207 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0D0E11" />
+<meta name="theme-color" content="#0B0C0F" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Temper" />
 <meta name="mobile-web-app-capable" content="yes" />
 <title>Temper — Cut Phase Tracker</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230D0E11'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23FF6B35' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230D0E11'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23FF6B35' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230B0C0F'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23E8492A' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230B0C0F'/%3E%3Cpath d='M25 70 L45 30 L55 30 L75 70 M35 55 L65 55' stroke='%23E8492A' stroke-width='7' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
 
   :root {
-    --bg: #0D0E11;
-    --surface: rgba(30,32,38,0.66);
-    --surface-solid: #1B1D22;
-    --surface2: rgba(255,255,255,0.045);
-    --surface3: rgba(255,255,255,0.07);
-    --border: rgba(255,255,255,0.09);
-    --border-strong: rgba(255,255,255,0.16);
-    --ember: #FF6B35;
-    --ember-2: #FF8F5C;
-    --ember-soft: rgba(255,107,53,0.16);
-    --ember-glow: rgba(255,107,53,0.45);
-    --temper: #22D3EE;
-    --temper-2: #5EEAFB;
-    --temper-soft: rgba(34,211,238,0.16);
-    --temper-glow: rgba(34,211,238,0.4);
-    --chalk: #F7F5F1;
-    --slate: #9CA0AA;
-    --slate-dim: #62656E;
-    --verdigris: #34D399;
-    --verdigris-soft: rgba(52,211,153,0.16);
-    --gold: #FFC145;
+    --bg: #0B0C0F;
+    --surface: #15171C;
+    --surface2: #1B1E24;
+    --surface3: #23262D;
+    --border: #262930;
+    --ember: #E8492A;
+    --ember-soft: rgba(232,73,42,0.14);
+    --gold: #E5A93C;
+    --gold-soft: rgba(229,169,60,0.14);
+    --temper: #3B9CD9;
+    --temper-soft: rgba(59,156,217,0.14);
+    --chalk: #F4F3F1;
+    --slate: #888C94;
+    --slate-dim: #55585F;
+    --verdigris: #34B37A;
+    --verdigris-soft: rgba(52,179,122,0.14);
   }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; padding: 0; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; min-width: 0; }
+  html, body { margin: 0; padding: 0; overflow-x: hidden; width: 100%; }
   body {
     background: var(--bg);
     color: var(--chalk);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    padding-bottom: 92px;
+    padding-bottom: 78px;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
-    position: relative;
-    overflow-x: hidden;
   }
-  .bg-glow {
-    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
-  }
-  .bg-glow::before, .bg-glow::after {
-    content: ''; position: absolute; border-radius: 50%; filter: blur(80px);
-  }
-  .bg-glow::before {
-    width: 340px; height: 340px; top: -120px; left: -80px;
-    background: radial-gradient(circle, var(--ember-glow), transparent 70%);
-    opacity: 0.35;
-  }
-  .bg-glow::after {
-    width: 300px; height: 300px; bottom: 60px; right: -100px;
-    background: radial-gradient(circle, var(--temper-glow), transparent 70%);
-    opacity: 0.28;
-  }
-  #app { position: relative; z-index: 1; }
-
-  .disp { font-family: 'Bebas Neue', 'Inter', sans-serif; letter-spacing: 0.04em; }
   .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
-  .grad-text {
-    background: linear-gradient(90deg, var(--ember-2), var(--gold) 55%, var(--temper-2));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
+  .hdg { font-weight: 800; letter-spacing: 0.01em; }
 
-  @keyframes fadeSlide { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes pulseGlow { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.9); } }
-  @keyframes shimmer { 0% { background-position: -200px 0; } 100% { background-position: 200px 0; } }
+  /* ---- Header ---- */
+  .header { padding: 20px 16px 14px; border-bottom: 1px solid var(--border); }
+  .eyebrow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .brand { display: flex; align-items: center; gap: 8px; }
+  .brand-mark { width: 24px; height: 24px; border-radius: 6px; background: var(--ember-soft); border: 1px solid var(--ember); display: flex; align-items: center; justify-content: center; }
+  .brand-title { font-size: 1.05rem; font-weight: 800; letter-spacing: 0.02em; }
+  .streak-chip { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; padding: 5px 10px; border-radius: 7px; background: var(--ember-soft); border: 1px solid var(--ember); color: var(--chalk); font-weight: 700; }
 
-  /* ---- Header / Gauge ---- */
-  .header { padding: 24px 18px 6px; position: relative; }
-  .eyebrow { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .brand { display: flex; align-items: center; gap: 9px; }
-  .brand-mark {
-    width: 30px; height: 30px; border-radius: 9px;
-    background: linear-gradient(135deg, var(--ember), #E8492A);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 18px var(--ember-glow), inset 0 1px 1px rgba(255,255,255,0.35);
-  }
-  .brand-title { font-size: 1.55rem; line-height: 1; }
-  .streak-chip {
-    display: flex; align-items: center; gap: 6px; font-size: 0.72rem; padding: 6px 12px;
-    border-radius: 20px; background: var(--surface); backdrop-filter: blur(14px);
-    border: 1px solid var(--border-strong); color: var(--slate);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-  }
-  .streak-chip b { color: var(--chalk); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
-  .flame-pulse { animation: pulseGlow 1.6s ease-in-out infinite; filter: drop-shadow(0 0 4px var(--ember-glow)); }
+  .mass-row { display: flex; justify-content: space-between; align-items: flex-end; }
+  .mass-label { font-size: 0.65rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.09em; font-weight: 700; margin-bottom: 5px; }
+  .mass-value { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+  .mass-value .unit { font-size: 0.9rem; color: var(--slate); font-weight: 500; margin-left: 3px; }
 
-  .mass-row { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 16px; animation: fadeSlide 0.5s ease; }
-  .mass-label { font-size: 0.66rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 4px; }
-  .mass-value { font-size: 2.7rem; font-weight: 800; line-height: 1; letter-spacing: -0.01em; }
-  .mass-value .unit { font-size: 1rem; color: var(--slate); font-weight: 500; margin-left: 3px; }
+  .progress-linear { position: relative; width: 100%; height: 8px; border-radius: 20px; margin-top: 14px; background: var(--surface3); overflow: hidden; }
+  .progress-fill-linear { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--ember), var(--gold)); }
+  .progress-summary { display: flex; justify-content: space-between; margin-top: 9px; font-size: 0.74rem; color: var(--slate); font-weight: 600; }
+  .progress-summary b { color: var(--chalk); font-family: 'JetBrains Mono', monospace; }
 
-  .progress-linear {
-    position: relative; width: 100%; height: 11px; border-radius: 20px; margin-top: 14px;
-    background: rgba(255,255,255,0.07); overflow: visible; border: 1px solid var(--border);
-  }
-  .progress-fill-linear {
-    position: relative; height: 100%; border-radius: 20px; min-width: 11px;
-    background: linear-gradient(90deg, var(--ember), var(--gold) 70%, var(--temper-2));
-    box-shadow: 0 0 16px var(--ember-glow);
-    transition: width 0.8s cubic-bezier(.22,1,.36,1);
-  }
-  .progress-fill-linear::after {
-    content: ''; position: absolute; inset: 0; border-radius: 20px; overflow: hidden;
-    background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%);
-    background-size: 200px 100%; animation: shimmer 2.6s infinite linear;
-  }
-  .progress-spark {
-    position: absolute; right: -5px; top: 50%; transform: translateY(-50%);
-    width: 15px; height: 15px; border-radius: 50%; background: var(--chalk);
-    box-shadow: 0 0 12px 4px var(--ember-glow); border: 2px solid var(--bg);
-  }
-  .progress-summary { display: flex; justify-content: space-between; margin-top: 9px; font-size: 0.76rem; color: var(--slate); font-weight: 600; }
-
-  .readout-row { display: flex; gap: 8px; margin-top: 14px; }
-  .readout-cell {
-    flex: 1; text-align: center; padding: 12px 4px; border-radius: 14px;
-    background: var(--surface); backdrop-filter: blur(14px); border: 1px solid var(--border);
-  }
-  .readout-val { font-family: 'JetBrains Mono', monospace; font-size: 1.15rem; font-weight: 700; }
-  .readout-label { font-size: 0.6rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.07em; margin-top: 3px; font-weight: 600; }
-
-  /* ---- Tabs ---- */
-  .content { padding: 18px 16px; animation: fadeSlide 0.35s ease; }
-  .tabs {
-    position: fixed; bottom: 14px; left: 14px; right: 14px; display: flex;
-    background: rgba(24,25,30,0.85); backdrop-filter: blur(20px); border: 1px solid var(--border-strong);
-    border-radius: 22px; padding: 6px; z-index: 20; box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-  }
-  .tab-btn {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 9px 0; background: none; border: none; color: var(--slate-dim); font-size: 0.62rem;
-    text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; font-weight: 600;
-    border-radius: 16px; transition: background 0.2s;
-  }
-  .tab-btn.active { color: var(--chalk); background: linear-gradient(135deg, rgba(255,107,53,0.22), rgba(34,211,238,0.14)); }
-  .tab-btn.active svg { stroke: var(--ember-2) !important; }
-  .tab-btn:active { transform: scale(0.94); }
+  /* ---- Layout ---- */
+  .content { padding: 16px; max-width: 100%; }
+  .tabs { position: fixed; bottom: 0; left: 0; right: 0; display: flex; background: var(--surface); border-top: 1px solid var(--border); padding-bottom: env(safe-area-inset-bottom); z-index: 20; }
+  .tab-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 0 9px; background: none; border: none; border-top: 2px solid transparent; color: var(--slate-dim); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.04em; font-family: 'Inter', sans-serif; font-weight: 700; }
+  .tab-btn.active { color: var(--ember); border-top-color: var(--ember); }
+  .tab-btn.active svg { stroke: var(--ember) !important; }
 
   /* ---- Cards ---- */
-  .card {
-    background: var(--surface); backdrop-filter: blur(16px);
-    border: 1px solid var(--border); border-radius: 18px; padding: 17px; margin-bottom: 13px;
-    position: relative; box-shadow: 0 8px 28px rgba(0,0,0,0.28);
-  }
-  .card-title-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 13px; }
-  .card-title { display: flex; align-items: center; gap: 9px; font-size: 1.2rem; }
-  .card-icon-badge {
-    width: 30px; height: 30px; border-radius: 9px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .card-tag { font-size: 0.73rem; color: var(--slate); margin-left: 39px; margin-top: 1px; }
-  .pill { padding: 4px 11px; border-radius: 8px; font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; border: 1px solid transparent; font-weight: 700; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 12px; max-width: 100%; overflow: hidden; }
+  .card-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .card-title { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; font-weight: 800; letter-spacing: 0.01em; text-transform: uppercase; }
+  .card-tag { font-size: 0.73rem; color: var(--slate); margin-top: 2px; }
+  .pill { padding: 3px 9px; border-radius: 6px; font-size: 0.66rem; font-family: 'JetBrains Mono', monospace; border: 1px solid transparent; font-weight: 700; }
 
-  .item-row {
-    width: 100%; display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 13px; border-radius: 12px; background: var(--surface2);
-    border: 1px solid var(--border); margin-bottom: 8px; cursor: pointer;
-    text-align: left; color: var(--chalk); font-size: 0.91rem; transition: all 0.18s;
-  }
-  .item-row:active { transform: scale(0.985); }
-  .item-row.done {
-    background: linear-gradient(135deg, rgba(52,211,153,0.14), rgba(52,211,153,0.05));
-    border-color: rgba(52,211,153,0.4);
-  }
-  .item-left { display: flex; align-items: center; gap: 11px; flex: 1; min-width: 0; }
-  .checkbox {
-    width: 21px; height: 21px; border-radius: 7px; border: 1.5px solid var(--slate-dim);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: var(--surface3);
-    transition: all 0.18s;
-  }
-  .item-row.done .checkbox { background: linear-gradient(135deg, var(--verdigris), #10B981); border-color: transparent; box-shadow: 0 0 10px rgba(52,211,153,0.5); }
-  .item-row.done .item-name { text-decoration: line-through; color: var(--slate); }
-  .item-sets { font-size: 0.73rem; color: var(--slate); flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
+  /* checklist rows: divided list, not filled boxes */
+  .item-row { width: 100%; display: flex; align-items: center; gap: 11px; padding: 11px 2px; border-bottom: 1px solid var(--border); cursor: pointer; text-align: left; background: none; border-left: none; border-right: none; border-top: none; }
+  .item-row:last-child { border-bottom: none; }
+  .checkbox { width: 19px; height: 19px; border-radius: 5px; border: 1.5px solid var(--slate-dim); display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: transparent; margin-top: 1px; }
+  .item-row.done .checkbox { background: var(--verdigris); border-color: var(--verdigris); }
+  .item-row.done .item-name { color: var(--slate); text-decoration: line-through; }
+  .item-body { flex: 1; min-width: 0; }
+  .item-name { color: var(--chalk); font-size: 0.9rem; font-weight: 600; display: block; }
+  .item-sub { font-size: 0.72rem; color: var(--slate); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+  .item-badges { display: flex; gap: 5px; flex-shrink: 0; }
+  .badge { padding: 3px 7px; border-radius: 5px; background: var(--surface3); border: 1px solid var(--border); font-size: 0.64rem; color: var(--slate); font-family: 'JetBrains Mono', monospace; font-weight: 700; white-space: nowrap; }
   .meal-desc { font-size: 0.75rem; color: var(--slate); margin-top: 3px; line-height: 1.4; }
 
-  .date-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; }
-  .nav-btn { background: var(--surface); backdrop-filter: blur(12px); border: 1px solid var(--border-strong); border-radius: 11px; padding: 8px 10px; color: var(--chalk); }
-  .nav-btn:active { transform: scale(0.92); }
-  .date-label { display: flex; align-items: center; gap: 7px; font-size: 0.9rem; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+  .date-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .nav-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 9px; color: var(--chalk); }
+  .date-label { display: flex; align-items: center; gap: 6px; font-size: 0.86rem; font-family: 'JetBrains Mono', monospace; font-weight: 600; }
 
-  .water-grid { display: flex; gap: 6px; }
-  .water-cup { flex: 1; height: 34px; border-radius: 9px; background: var(--surface2); border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
-  .water-cup.filled { background: linear-gradient(180deg, var(--temper-2), var(--temper)); border-color: transparent; box-shadow: 0 0 12px var(--temper-glow); }
+  .water-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; }
+  .water-cup { height: 30px; border-radius: 6px; background: var(--surface3); border: 1px solid var(--border); cursor: pointer; min-width: 0; }
+  .water-cup.filled { background: var(--temper); border-color: var(--temper); }
 
-  .energy-row { display: flex; gap: 8px; margin-top: 5px; }
-  .energy-dot {
-    flex: 1; height: 38px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center; font-size: 0.78rem; color: var(--slate); cursor: pointer; font-weight: 700;
-  }
-  .energy-dot.active { background: linear-gradient(135deg, var(--ember), var(--gold)); border-color: transparent; color: #1A1000; box-shadow: 0 0 14px var(--ember-glow); }
+  .energy-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-top: 4px; }
+  .energy-dot { height: 34px; border-radius: 8px; background: var(--surface3); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--slate); cursor: pointer; font-weight: 700; min-width: 0; }
+  .energy-dot.active { background: var(--ember); border-color: var(--ember); color: #1A0800; }
 
-  .exercise-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-  .exercise-tag { font-size: 0.73rem; padding: 6px 10px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--slate); font-family: 'JetBrains Mono', monospace; }
+  /* weekly protocol day card */
+  .day-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+  .day-card.today { border-color: var(--ember); }
+  .day-header { padding: 12px 15px; background: var(--surface2); display: flex; justify-content: space-between; align-items: center; }
+  .day-header .dow { font-size: 0.66rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+  .day-header .dname { font-size: 0.98rem; font-weight: 800; margin-top: 2px; }
+  .day-body { padding: 12px 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ex-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 9px; padding: 9px 10px; min-width: 0; }
+  .ex-box .exn { font-size: 0.79rem; font-weight: 700; color: var(--chalk); overflow-wrap: break-word; }
+  .ex-box .exs { font-size: 0.7rem; color: var(--slate); margin-top: 3px; font-family: 'JetBrains Mono', monospace; }
 
   input[type=number], input[type=text] {
-    flex: 1; padding: 11px 13px; border-radius: 10px; background: var(--surface2);
-    border: 1px solid var(--border-strong); color: var(--chalk); font-size: 0.92rem; font-family: 'JetBrains Mono', monospace;
+    width: 100%; min-width: 0; padding: 10px 12px; border-radius: 9px; background: var(--surface2);
+    border: 1px solid var(--border); color: var(--chalk); font-size: 0.88rem; font-family: 'JetBrains Mono', monospace;
   }
   input::placeholder { color: var(--slate-dim); }
-  .input-row { display: flex; gap: 8px; }
-  .btn { padding: 11px 18px; border-radius: 10px; border: none; font-weight: 800; font-size: 0.83rem; text-transform: uppercase; letter-spacing: 0.03em; font-family: 'Inter', sans-serif; cursor: pointer; }
-  .btn:active { transform: scale(0.96); }
-  .btn-ember { background: linear-gradient(135deg, var(--ember), #E8492A); color: #1A1000; box-shadow: 0 4px 16px var(--ember-glow); }
-  .btn-outline { background: var(--surface2); border: 1px solid var(--border-strong); color: var(--slate); }
+  .input-row { display: flex; gap: 8px; min-width: 0; }
+  .input-row input { flex: 1; min-width: 0; }
+  .btn { padding: 10px 16px; border-radius: 9px; border: none; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.02em; font-family: 'Inter', sans-serif; cursor: pointer; flex-shrink: 0; }
+  .btn-ember { background: var(--gold); color: #1A1000; }
+  .btn-outline { background: var(--surface2); border: 1px solid var(--border); color: var(--slate); width: 100%; }
+  .btn-icon { width: 42px; height: 42px; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 
-  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 12px 13px; }
-  .stat-label { font-size: 0.68rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
-  .stat-value { font-size: 1.3rem; margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; min-width: 0; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 11px; padding: 12px 13px; min-width: 0; }
+  .stat-label { font-size: 0.66rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+  .stat-value { font-size: 1.35rem; margin-top: 5px; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
 
-  .empty-note { text-align: center; color: var(--slate); font-size: 0.86rem; padding: 22px 10px; line-height: 1.5; }
+  .target-date-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .target-date-val { font-size: 1.15rem; font-weight: 700; }
+  .days-left-pill { padding: 5px 10px; border-radius: 7px; background: var(--ember-soft); border: 1px solid var(--ember); color: var(--ember); font-size: 0.7rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
 
-  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; }
-  .heatmap-legend { display: flex; align-items: center; gap: 4px; justify-content: flex-end; margin-top: 9px; font-size: 0.62rem; color: var(--slate); }
-  .legend-sq { width: 10px; height: 10px; border-radius: 3px; }
+  .empty-note { text-align: center; color: var(--slate); font-size: 0.85rem; padding: 20px 8px; line-height: 1.5; }
 
-  .measure-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 11px; }
-  .measure-grid input { text-align: center; }
-  .measure-field-label { font-size: 0.62rem; color: var(--slate); text-align: center; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
-  .measure-history { display: flex; flex-direction: column; gap: 7px; margin-top: 11px; }
-  .measure-row { display: flex; justify-content: space-between; font-size: 0.79rem; padding: 9px 11px; background: var(--surface2); border-radius: 10px; }
-  .measure-row .d { color: var(--slate); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; }
+  .heatmap-scroll { overflow-x: auto; padding-bottom: 4px; max-width: 100%; }
+  .heatmap-legend { display: flex; align-items: center; gap: 4px; justify-content: flex-end; margin-top: 8px; font-size: 0.6rem; color: var(--slate); }
+  .legend-sq { width: 9px; height: 9px; border-radius: 2px; }
+
+  .measure-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin-bottom: 10px; }
+  .measure-grid > div { min-width: 0; }
+  .measure-grid input { text-align: center; width: 100%; }
+  .measure-field-label { font-size: 0.6rem; color: var(--slate); text-align: center; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.03em; font-weight: 700; }
+  .measure-history { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+  .measure-row { display: flex; justify-content: space-between; font-size: 0.77rem; padding: 8px 10px; background: var(--surface2); border-radius: 8px; gap: 8px; }
+  .measure-row .d { color: var(--slate); font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; flex-shrink: 0; }
+  .measure-row span:last-child { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; text-align: right; }
+
+  .legend-row { display: flex; gap: 12px; font-size: 0.68rem; color: var(--slate); }
+  .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; }
 
   svg text { font-family: 'JetBrains Mono', monospace; }
 </style>
 </head>
 <body>
-<div class="bg-glow"></div>
 <div id="app"></div>
 
 <script>
 // ============ Program data ============
 const SPLIT = {
-  1: { name: "Upper Body — Push", tag: "Chest / Shoulders / Triceps", rest: false, exercises: [
-    { id: "mon1", name: "DB Flat Bench Press", sets: "4×8-10" },
-    { id: "mon2", name: "DB Shoulder Press", sets: "3×10-12" },
-    { id: "mon3", name: "Incline DB Press", sets: "3×10-12" },
-    { id: "mon4", name: "DB Lateral Raise", sets: "3×15" },
-    { id: "mon5", name: "DB Overhead Triceps Ext.", sets: "3×12" },
-    { id: "mon6", name: "DB Kickbacks", sets: "3×12" },
+  1: { name: "Upper Push", tag: "Chest / Shoulders / Triceps", rest: false, exercises: [
+    { id: "mon1", name: "DB Flat Bench Press", sets: "4x8-10" },
+    { id: "mon2", name: "DB Shoulder Press", sets: "3x10-12" },
+    { id: "mon3", name: "Incline DB Press", sets: "3x10-12" },
+    { id: "mon4", name: "DB Lateral Raise", sets: "3x15" },
+    { id: "mon5", name: "DB Overhead Triceps Ext.", sets: "3x12" },
+    { id: "mon6", name: "DB Kickbacks", sets: "3x12" },
   ]},
-  2: { name: "Lower Body A", tag: "Quads / Hamstrings / Calves", rest: false, exercises: [
-    { id: "tue1", name: "DB Goblet Squat", sets: "4×10-12" },
-    { id: "tue2", name: "DB Romanian Deadlift", sets: "3×10-12" },
-    { id: "tue3", name: "DB Walking Lunges", sets: "3×12/leg" },
-    { id: "tue4", name: "DB Calf Raise", sets: "4×15-20" },
-    { id: "tue5", name: "Lying Leg Raises", sets: "3×15" },
-    { id: "tue6", name: "Plank", sets: "3×45s" },
+  2: { name: "Lower A", tag: "Quads / Hamstrings / Calves", rest: false, exercises: [
+    { id: "tue1", name: "DB Goblet Squat", sets: "4x10-12" },
+    { id: "tue2", name: "DB Romanian Deadlift", sets: "3x10-12" },
+    { id: "tue3", name: "DB Walking Lunges", sets: "3x12/leg" },
+    { id: "tue4", name: "DB Calf Raise", sets: "4x15-20" },
+    { id: "tue5", name: "Lying Leg Raises", sets: "3x15" },
+    { id: "tue6", name: "Plank", sets: "3x45s" },
   ]},
   3: { name: "Active Recovery", tag: "Walk + Stretch", rest: true, exercises: [
     { id: "wed1", name: "Brisk Walk", sets: "25-30 min" },
-    { id: "wed2", name: "Full Body Stretch / Mobility", sets: "10-15 min" },
+    { id: "wed2", name: "Full Body Stretch", sets: "10-15 min" },
   ]},
-  4: { name: "Upper Body — Pull", tag: "Back / Biceps / Rear Delts", rest: false, exercises: [
-    { id: "thu1", name: "DB Bent-Over Row", sets: "4×8-10" },
-    { id: "thu2", name: "Single-Arm DB Row", sets: "3×10/side" },
-    { id: "thu3", name: "DB Reverse Fly", sets: "3×15" },
-    { id: "thu4", name: "DB Bicep Curl", sets: "3×12" },
-    { id: "thu5", name: "DB Hammer Curl", sets: "3×12" },
-    { id: "thu6", name: "DB Shrugs", sets: "3×15" },
+  4: { name: "Upper Pull", tag: "Back / Biceps / Rear Delts", rest: false, exercises: [
+    { id: "thu1", name: "DB Bent-Over Row", sets: "4x8-10" },
+    { id: "thu2", name: "Single-Arm DB Row", sets: "3x10/side" },
+    { id: "thu3", name: "DB Reverse Fly", sets: "3x15" },
+    { id: "thu4", name: "DB Bicep Curl", sets: "3x12" },
+    { id: "thu5", name: "DB Hammer Curl", sets: "3x12" },
+    { id: "thu6", name: "DB Shrugs", sets: "3x15" },
   ]},
-  5: { name: "Lower Body B", tag: "Glutes / Hamstrings / Core", rest: false, exercises: [
-    { id: "fri1", name: "DB Bulgarian Split Squat", sets: "3×10/leg" },
-    { id: "fri2", name: "DB Step-Ups", sets: "3×12/leg" },
-    { id: "fri3", name: "DB Sumo Squat", sets: "3×12" },
-    { id: "fri4", name: "DB Stiff-Leg Deadlift", sets: "3×12" },
-    { id: "fri5", name: "DB Loaded Glute Bridge", sets: "3×15" },
-    { id: "fri6", name: "Russian Twists", sets: "3×20" },
+  5: { name: "Lower B", tag: "Glutes / Hamstrings / Core", rest: false, exercises: [
+    { id: "fri1", name: "DB Bulgarian Split Squat", sets: "3x10/leg" },
+    { id: "fri2", name: "DB Step-Ups", sets: "3x12/leg" },
+    { id: "fri3", name: "DB Sumo Squat", sets: "3x12" },
+    { id: "fri4", name: "DB Stiff-Leg Deadlift", sets: "3x12" },
+    { id: "fri5", name: "DB Loaded Glute Bridge", sets: "3x15" },
+    { id: "fri6", name: "Russian Twists", sets: "3x20" },
   ]},
   6: { name: "Full Body Conditioning", tag: "Fat-loss circuit", rest: false, exercises: [
-    { id: "sat1", name: "DB Thrusters", sets: "4×12" },
-    { id: "sat2", name: "Renegade Rows", sets: "3×10/side" },
-    { id: "sat3", name: "DB Squat to Press", sets: "3×12" },
-    { id: "sat4", name: "Burpees", sets: "3×15" },
-    { id: "sat5", name: "Mountain Climbers", sets: "3×30s" },
-    { id: "sat6", name: "Jump Squats", sets: "3×15" },
+    { id: "sat1", name: "DB Thrusters", sets: "4x12" },
+    { id: "sat2", name: "Renegade Rows", sets: "3x10/side" },
+    { id: "sat3", name: "DB Squat to Press", sets: "3x12" },
+    { id: "sat4", name: "Burpees", sets: "3x15" },
+    { id: "sat5", name: "Mountain Climbers", sets: "3x30s" },
+    { id: "sat6", name: "Jump Squats", sets: "3x15" },
   ]},
   0: { name: "Rest Day", tag: "Recovery", rest: true, exercises: [
     { id: "sun1", name: "Light Stretch (optional)", sets: "10 min" },
@@ -321,6 +238,7 @@ function dKey(d){
 }
 function todayKey(){ return dKey(new Date()); }
 function fmtDate(key){ return new Date(key+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}); }
+function fmtLong(key){ return new Date(key+"T00:00:00").toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"}); }
 function fmtShort(key){ return new Date(key+"T00:00:00").toLocaleDateString(undefined,{month:"short",day:"numeric"}); }
 function addDays(key,n){ const d=new Date(key+"T00:00:00"); d.setDate(d.getDate()+n); return dKey(d); }
 function dayOfWeek(key){ return new Date(key+"T00:00:00").getDay(); }
@@ -419,23 +337,24 @@ function computeStreak(){
   }
   return count;
 }
-function checkIcon(){ return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#052e1c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
+function checkIcon(){ return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#052e1c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'; }
 
 const ICON = {
-  hammer: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12l-8.5 8.5a1.5 1.5 0 0 1-2-2L13 10"/><path d="M17.6 3.5 20.5 6.4a1 1 0 0 1 0 1.4l-2.2 2.2a1 1 0 0 1-1.4 0L14 7a1 1 0 0 1 0-1.4l2.2-2.1a1 1 0 0 1 1.4 0z"/></svg>`,
+  dumbbell: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round"><path d="M6.5 6.5 17.5 17.5M4 9l3-3M20 15l-3 3M2 12l3-3M22 12l-3 3M9 4l3-3M15 20l3 3"/></svg>`,
   calendar: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>`,
-  chevronLeft: c => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.6"><polyline points="15 18 9 12 15 6"/></svg>`,
-  chevronRight: c => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.6"><polyline points="9 18 15 12 9 6"/></svg>`,
-  utensils: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v11M9 2v20M17 2c-2.2 0-4 3.6-4 8s1.8 8 4 8"/></svg>`,
-  droplet: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M12 2s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg>`,
-  target: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
-  gauge: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12 16 8"/><circle cx="12" cy="12" r="1"/></svg>`,
-  trend: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
-  ruler: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7v3M11 7v3M15 7v3M19 7v3"/></svg>`,
-  flame: c => `<svg width="13" height="13" viewBox="0 0 24 24" fill="${c}" stroke="none"><path d="M12 2c-2 4-5 5-5 10a5 5 0 0 0 10 0c0-1-.5-2-1-3 0 2-1 3-2 3-2 0-2-2-2-4 0-2 1-4 0-6z"/></svg>`,
+  chevronLeft: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.4"><polyline points="15 18 9 12 15 6"/></svg>`,
+  chevronRight: c => `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.4"><polyline points="9 18 15 12 9 6"/></svg>`,
+  utensils: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M3 2v7c0 1.1.9 2 2 2s2-.9 2-2V2M5 11v11M9 2v20M17 2c-2.2 0-4 3.6-4 8s1.8 8 4 8"/></svg>`,
+  droplet: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M12 2s7 7.5 7 12a7 7 0 0 1-14 0c0-4.5 7-12 7-12z"/></svg>`,
+  target: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+  gauge: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M12 20a8 8 0 1 0-8-8"/><path d="M12 12 16 8"/><circle cx="12" cy="12" r="1"/></svg>`,
+  trend: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>`,
+  ruler: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><rect x="3" y="7" width="18" height="10" rx="1"/><path d="M7 7v3M11 7v3M15 7v3M19 7v3"/></svg>`,
+  flame: c => `<svg width="12" height="12" viewBox="0 0 24 24" fill="${c}" stroke="none"><path d="M12 2c-2 4-5 5-5 10a5 5 0 0 0 10 0c0-1-.5-2-1-3 0 2-1 3-2 3-2 0-2-2-2-4 0-2 1-4 0-6z"/></svg>`,
+  scale: c => `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M12 3v18M5 7l7-4 7 4M3 7h4l-2 6a2.5 2.5 0 0 0 4 0L7 7M17 7h4l-2 6a2.5 2.5 0 0 0 4 0L21 7"/></svg>`,
+  save: c => `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="${c}" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>`,
 };
 
-// ============ Heatmap ============
 function drawHeatmap(){
   const weeks = 12, cell = 11, gap = 3;
   const today = todayKey();
@@ -461,59 +380,49 @@ function drawHeatmap(){
       const dow = dayOfWeek(dateKey);
       const plan = SPLIT[dow];
       const log = getLog(dateKey);
-      let color = 'rgba(255,255,255,0.05)';
+      let color = '#1B1E24';
       if (plan.rest) {
-        color = 'rgba(255,255,255,0.09)';
+        color = '#23262D';
       } else {
         const doneCount = plan.exercises.filter(e => log.exercises[e.id]).length;
         const frac = doneCount/plan.exercises.length;
-        if (frac >= 1) color = '#FF6B35';
-        else if (frac > 0.5) color = '#FFC145';
-        else if (frac > 0) color = '#22D3EE';
+        if (frac >= 1) color = '#E8492A';
+        else if (frac > 0.5) color = '#E5A93C';
+        else if (frac > 0) color = '#3B9CD9';
       }
       const isToday = dateKey === today;
-      rects += `<rect x="${ci*(cell+gap)}" y="${di*(cell+gap)}" width="${cell}" height="${cell}" rx="2.5" fill="${color}" ${isToday ? 'stroke="#F7F5F1" stroke-width="1"' : ''}><title>${dateKey}</title></rect>`;
+      rects += `<rect x="${ci*(cell+gap)}" y="${di*(cell+gap)}" width="${cell}" height="${cell}" rx="2.5" fill="${color}" ${isToday ? 'stroke="#F4F3F1" stroke-width="1"' : ''}><title>${dateKey}</title></rect>`;
     });
   });
-  return `<div class="heatmap-scroll"><svg viewBox="0 0 ${svgW} ${svgH}" width="${Math.max(svgW,280)}" height="${svgH}">${rects}</svg></div>`;
+  return `<div class="heatmap-scroll"><svg viewBox="0 0 ${svgW} ${svgH}" width="${Math.max(svgW,260)}" height="${svgH}">${rects}</svg></div>`;
 }
 
 function drawTrend(series, goal){
-  const w = 320, h = 132, pad = 26;
+  const w = 300, h = 130, pad = 28;
   const weights = series.map(s=>s.weight);
   const min = Math.min(...weights, goal) - 1;
   const max = Math.max(...weights, goal) + 1;
   const x = i => pad + (i/(series.length-1)) * (w - pad*2);
   const y = v => h - pad - ((v-min)/(max-min)) * (h - pad*2);
   const points = series.map((s,i) => `${x(i)},${y(s.weight)}`).join(' ');
-  const areaPoints = `${x(0)},${h-pad} ${points} ${x(series.length-1)},${h-pad}`;
   const goalY = y(goal);
-  const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="3.2" fill="#FF6B35" stroke="#0D0E11" stroke-width="1.5"/>`).join('');
+  const dots = series.map((s,i) => `<circle cx="${x(i)}" cy="${y(s.weight)}" r="3" fill="#E5A93C" stroke="#15171C" stroke-width="1.5"/>`).join('');
   const axisSteps = 3;
   let axisLines = '';
   for (let i=0; i<=axisSteps; i++){
     const val = min + (max-min)*(i/axisSteps);
     const yy = y(val);
-    axisLines += `<line x1="${pad}" y1="${yy}" x2="${w-pad}" y2="${yy}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
-    axisLines += `<text x="2" y="${yy+3}" fill="#62656E" font-size="8">${val.toFixed(0)}</text>`;
+    axisLines += `<line x1="${pad}" y1="${yy}" x2="${w-pad}" y2="${yy}" stroke="#23262D" stroke-width="1"/>`;
+    axisLines += `<text x="0" y="${yy+3}" fill="#55585F" font-size="8">${val.toFixed(0)}</text>`;
   }
-  return `<svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible">
-    <defs>
-      <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
-      </linearGradient>
-      <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#FF6B35"/>
-        <stop offset="100%" stop-color="#22D3EE"/>
-      </linearGradient>
-    </defs>
+  return `<div class="legend-row" style="margin-bottom:8px">
+    <span><span class="legend-dot" style="background:#E5A93C"></span>Logged</span>
+    <span><span class="legend-dot" style="background:#E8492A"></span>Goal</span>
+  </div>
+  <svg width="100%" viewBox="0 0 ${w} ${h}" style="overflow:visible;max-width:100%">
     ${axisLines}
-    <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#22D3EE" stroke-dasharray="4 3" stroke-width="1.5"/>
-    <text x="${w-pad+2}" y="${goalY+3}" fill="#22D3EE" font-size="9" font-weight="700">GOAL</text>
-    <polygon points="${areaPoints}" fill="url(#trendFill)"/>
-
-    <polyline points="${points}" fill="none" stroke="url(#lineGrad)" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+    <line x1="${pad}" y1="${goalY}" x2="${w-pad}" y2="${goalY}" stroke="#E8492A" stroke-dasharray="4 3" stroke-width="1.5"/>
+    <polyline points="${points}" fill="none" stroke="#E5A93C" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
     ${dots}
   </svg>`;
 }
@@ -527,6 +436,7 @@ function render(){
   const daysLeft = Math.max(0, Math.ceil((new Date(targetDate) - new Date(todayKey()))/86400000));
   const streak = computeStreak();
   const wAvg = weeklyAverage();
+  const pctDone = Math.max(0, Math.min(100, (lostSoFar/totalToLose)*100));
 
   const dow = dayOfWeek(viewDate);
   const plan = SPLIT[dow];
@@ -538,37 +448,29 @@ function render(){
   <div class="header">
     <div class="eyebrow">
       <div class="brand">
-        <div class="brand-mark">${ICON.hammer('#1A1000')}</div>
-        <span class="disp brand-title grad-text">TEMPER</span>
+        <div class="brand-mark">${ICON.dumbbell('#E8492A')}</div>
+        <span class="brand-title">TEMPER</span>
       </div>
-      <div class="streak-chip"><span class="flame-pulse" style="display:flex">${ICON.flame('#FF6B35')}</span> <b>${streak}</b>&nbsp;day streak</div>
+      <div class="streak-chip">${ICON.flame('#E8492A')} ${streak} DAY STREAK</div>
     </div>
 
     <div class="mass-row">
-      <div class="mass-block">
+      <div>
         <div class="mass-label">Current Mass</div>
         <div class="mass-value mono">${cw.toFixed(1)}<span class="unit">kg</span></div>
       </div>
-      <div class="mass-block" style="text-align:right">
+      <div style="text-align:right">
         <div class="mass-label">Target</div>
         <div class="mass-value mono" style="color:var(--gold)">${state.profile.goalWeight.toFixed(1)}<span class="unit">kg</span></div>
       </div>
     </div>
 
     <div class="progress-linear">
-      <div class="progress-fill-linear" style="width:${Math.min(100,Math.max(0,(lostSoFar/totalToLose)*100))}%">
-        <span class="progress-spark"></span>
-      </div>
+      <div class="progress-fill-linear" style="width:${pctDone}%"></div>
     </div>
     <div class="progress-summary">
-      <span><b class="mono" style="color:var(--ember-2)">${Math.max(0,Math.min(100,(lostSoFar/totalToLose)*100)).toFixed(0)}%</b> tempered</span>
-      <span class="mono">${daysLeft}<span style="color:var(--slate)">d remaining</span></span>
-    </div>
-
-    <div class="readout-row">
-      <div class="readout-cell"><div class="readout-val" style="color:var(--ember-2)">${lostSoFar.toFixed(1)}</div><div class="readout-label">Kg Lost</div></div>
-      <div class="readout-cell"><div class="readout-val" style="color:var(--gold)">${Math.max(0,(totalToLose-lostSoFar)).toFixed(1)}</div><div class="readout-label">Kg To Go</div></div>
-      <div class="readout-cell"><div class="readout-val" style="color:var(--temper-2)">${wAvg ? wAvg.toFixed(1) : '—'}</div><div class="readout-label">7d Avg</div></div>
+      <span><b>${pctDone.toFixed(0)}%</b> done</span>
+      <span><b>${daysLeft}d</b> remaining</span>
     </div>
   </div>
   <div class="content">`;
@@ -576,29 +478,30 @@ function render(){
   if (tab === "today") {
     html += `
     <div class="date-nav">
-      <button class="nav-btn" onclick="viewDate=addDays(viewDate,-1);render()">${ICON.chevronLeft('#F7F5F1')}</button>
-      <div class="date-label" style="color:${isToday?'var(--chalk)':'var(--slate)'}">${ICON.calendar('#9CA0AA')} ${isToday ? "TODAY" : fmtDate(viewDate).toUpperCase()}</div>
-      <button class="nav-btn" onclick="viewDate=addDays(viewDate,1);render()">${ICON.chevronRight('#F7F5F1')}</button>
+      <button class="nav-btn" onclick="viewDate=addDays(viewDate,-1);render()">${ICON.chevronLeft('#F4F3F1')}</button>
+      <div class="date-label" style="color:${isToday?'var(--chalk)':'var(--slate)'}">${ICON.calendar('#888C94')} ${isToday ? "TODAY" : fmtDate(viewDate).toUpperCase()}</div>
+      <button class="nav-btn" onclick="viewDate=addDays(viewDate,1);render()">${ICON.chevronRight('#F4F3F1')}</button>
     </div>
 
     <div class="card">
       <div class="card-title-row">
-        <div>
-          <div class="card-title"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.hammer('#FF6B35')}</span> <span class="disp">${plan.name.toUpperCase()}</span></div>
-          <div class="card-tag">${plan.tag}</div>
-        </div>
-        ${!plan.rest ? `<span class="pill" style="color:var(--verdigris);background:var(--verdigris-soft);border-color:rgba(52,211,153,0.35)">${plan.exercises.filter(e=>dayLog.exercises[e.id]).length}/${plan.exercises.length}</span>` : ''}
+        <div class="card-title">${ICON.dumbbell('#E8492A')} ${plan.name.toUpperCase()}</div>
+        ${!plan.rest ? `<span class="pill" style="color:var(--verdigris);background:var(--verdigris-soft);border-color:var(--verdigris)">${plan.exercises.filter(e=>dayLog.exercises[e.id]).length}/${plan.exercises.length}</span>` : ''}
       </div>
+      <div style="margin-top:-6px;margin-bottom:8px"><span class="card-tag">${plan.tag}</span></div>
       ${plan.exercises.map(ex => {
         const done = !!dayLog.exercises[ex.id];
         return `<button class="item-row ${done?'done':''}" onclick="toggleExercise('${viewDate}','${ex.id}')">
-          <div class="item-left"><div class="checkbox">${done?checkIcon():''}</div><span class="item-name">${ex.name}</span></div>
-          <span class="item-sets">${ex.sets}</span>
+          <div class="checkbox">${done?checkIcon():''}</div>
+          <div class="item-body">
+            <span class="item-name">${ex.name}</span>
+            <div class="item-sub">SET: ${ex.sets.split('x')[0]} REP: ${ex.sets.split('x')[1]||''}</div>
+          </div>
         </button>`;
       }).join('')}
       ${!plan.rest ? `
-      <div style="margin-top:11px;padding-top:11px;border-top:1px solid var(--border)">
-        <div class="card-tag" style="margin-left:0;margin-bottom:7px">SESSION FELT</div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+        <div class="card-tag" style="margin-bottom:7px">SESSION FELT</div>
         <div class="energy-row">
           ${['Wrecked','Rough','Okay','Strong','Peak'].map((label,i) => `<button class="energy-dot ${dayLog.energy===i+1?'active':''}" onclick="setEnergy('${viewDate}',${i+1})">${i+1}</button>`).join('')}
         </div>
@@ -607,47 +510,58 @@ function render(){
 
     <div class="card">
       <div class="card-title-row">
-        <div class="card-title"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.utensils('#22D3EE')}</span> <span class="disp">MEALS</span></div>
-        <span class="pill" style="color:var(--temper-2);background:var(--temper-soft);border-color:rgba(34,211,238,0.35)">${meals.label}</span>
+        <div class="card-title">${ICON.droplet('#3B9CD9')} HYDRATION</div>
+        <span class="mono" style="font-size:0.78rem;color:var(--temper);font-weight:700">${dayLog.water}/8</span>
       </div>
-      ${meals.items.map(m => {
-        const done = !!dayLog.meals[m.id];
-        return `<button class="item-row ${done?'done':''}" style="align-items:flex-start" onclick="toggleMeal('${viewDate}','${m.id}')">
-          <div class="item-left"><div class="checkbox" style="margin-top:2px">${done?checkIcon():''}</div>
-            <div style="flex:1;min-width:0">
-              <div style="display:flex;justify-content:space-between;gap:8px"><span class="item-name">${m.name}</span><span class="item-sets" style="flex-shrink:0">${m.kcal} kcal · ${m.p}p</span></div>
-              <div class="meal-desc">${m.desc}</div>
-            </div>
-          </div>
-        </button>`;
-      }).join('')}
-      <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.72rem;color:var(--slate)">
-        <span>DAILY TARGET</span><span class="mono">${MACRO_TARGET.kcal} kcal · P${MACRO_TARGET.protein} F${MACRO_TARGET.fat} C${MACRO_TARGET.carbs}</span>
+      <div class="water-grid">
+        ${Array.from({length:8}).map((_,i) => `<button class="water-cup ${i<dayLog.water?'filled':''}" onclick="setWater('${viewDate}', ${i+1===dayLog.water ? i : i+1})"></button>`).join('')}
       </div>
+      <div style="text-align:center;margin-top:8px" class="mono card-tag">${dayLog.water}&nbsp;/&nbsp;8 GLASSES</div>
     </div>
 
     <div class="card">
       <div class="card-title-row">
-        <div class="card-title"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.droplet('#22D3EE')}</span> <span class="disp">WATER</span></div>
-        <span class="mono" style="font-size:0.82rem;font-weight:700">${dayLog.water}/8</span>
+        <div class="card-title">${ICON.utensils('#E5A93C')} FUEL</div>
+        <span class="pill" style="color:var(--gold);background:var(--gold-soft);border-color:var(--gold)">${meals.label}</span>
       </div>
-      <div class="water-grid">
-        ${Array.from({length:8}).map((_,i) => `<button class="water-cup ${i<dayLog.water?'filled':''}" onclick="setWater('${viewDate}', ${i+1===dayLog.water ? i : i+1})"></button>`).join('')}
+      ${meals.items.map(m => {
+        const done = !!dayLog.meals[m.id];
+        return `<button class="item-row ${done?'done':''}" onclick="toggleMeal('${viewDate}','${m.id}')">
+          <div class="checkbox" style="margin-top:2px">${done?checkIcon():''}</div>
+          <div class="item-body">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+              <span class="item-name">${m.name.toUpperCase()}</span>
+              <div class="item-badges">
+                <span class="badge">${m.kcal} KCAL</span>
+                <span class="badge">${m.p}G P</span>
+              </div>
+            </div>
+            <div class="meal-desc">${m.desc}</div>
+          </div>
+        </button>`;
+      }).join('')}
+      <div style="margin-top:9px;padding-top:9px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.7rem;color:var(--slate)">
+        <span>DAILY TARGET</span><span class="mono">${MACRO_TARGET.kcal} kcal · P${MACRO_TARGET.protein} F${MACRO_TARGET.fat} C${MACRO_TARGET.carbs}</span>
       </div>
     </div>`;
   }
 
   if (tab === "plan") {
-    html += `<p style="font-size:0.73rem;color:var(--slate);margin-bottom:13px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600">Home dumbbell split · repeats weekly</p>`;
+    html += `<p style="font-size:0.72rem;color:var(--slate);margin-bottom:13px;text-transform:uppercase;letter-spacing:0.06em;font-weight:700">${ICON.calendar('#888C94')} Weekly Protocol · repeats every week</p>`;
     const todayDow = dayOfWeek(todayKey());
     [1,2,3,4,5,6,0].forEach(d => {
       const isTodayCard = d === todayDow;
-      html += `<div class="card" style="${isTodayCard ? 'border-color:var(--ember);box-shadow:0 0 0 1px var(--ember), 0 8px 28px rgba(255,107,53,0.18);' : ''}">
-        <div class="card-title-row" style="margin-bottom:9px">
-          <span class="disp" style="font-size:1.1rem;${isTodayCard?'color:var(--ember-2)':''}">${DAY_NAMES[d]} · ${SPLIT[d].name.toUpperCase()}</span>
-          ${isTodayCard ? `<span class="pill" style="color:#1A1000;background:linear-gradient(135deg, var(--ember), var(--gold));border-color:transparent;font-weight:800">TODAY</span>` : (SPLIT[d].rest ? `<span class="pill" style="color:var(--slate);background:var(--surface2);border-color:var(--border)">Rest</span>` : '')}
+      html += `<div class="day-card ${isTodayCard?'today':''}">
+        <div class="day-header">
+          <div>
+            <div class="dow" style="${isTodayCard?'color:var(--ember)':''}">${isTodayCard?'TODAY · ':''}${DAY_NAMES[d]}</div>
+            <div class="dname">${SPLIT[d].name}</div>
+          </div>
+          ${SPLIT[d].rest ? `<span class="pill" style="color:var(--slate);background:var(--surface3);border-color:var(--border)">Rest</span>` : ''}
         </div>
-        <div class="exercise-tags">${SPLIT[d].exercises.map(ex => `<span class="exercise-tag">${ex.name} · ${ex.sets}</span>`).join('')}</div>
+        <div class="day-body">
+          ${SPLIT[d].exercises.map(ex => `<div class="ex-box"><div class="exn">${ex.name}</div><div class="exs">${ex.sets}</div></div>`).join('')}
+        </div>
       </div>`;
     });
   }
@@ -656,60 +570,71 @@ function render(){
     const series = weightSeries();
     html += `
     <div class="card">
-      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.trend('#FF6B35')}</span> <span class="disp">WEIGHT TREND</span></div>
-      ${series.length>=2 ? drawTrend(series, state.profile.goalWeight) : `<div class="empty-note">Log at least 2 weigh-ins to see your trend.</div>`}
+      <div class="card-title" style="margin-bottom:12px">${ICON.scale('#E5A93C')} LOG TODAY'S MASS</div>
+      <div class="input-row">
+        <input type="number" step="0.1" inputmode="decimal" id="weightInput" placeholder="e.g. ${cw.toFixed(1)}" />
+        <button class="btn btn-ember btn-icon" onclick="logWeight(todayKey(), document.getElementById('weightInput').value)">${ICON.save('#1A1000')}</button>
+      </div>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom:12px">
+      <div class="stat-box"><div class="stat-label">${ICON.trend('#E8492A')} KG LOST</div><div class="stat-value">${lostSoFar.toFixed(1)} kg</div></div>
+      <div class="stat-box"><div class="stat-label">${ICON.target('#E5A93C')} REMAINING</div><div class="stat-value">${Math.max(0,totalToLose-lostSoFar).toFixed(1)} kg</div></div>
     </div>
 
     <div class="card">
-      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.target('#22D3EE')}</span> <span class="disp">LOG TODAY'S WEIGHT</span></div>
-      <div class="input-row">
-        <input type="number" step="0.1" inputmode="decimal" id="weightInput" placeholder="${cw.toFixed(1)}" />
-        <button class="btn btn-ember" onclick="logWeight(todayKey(), document.getElementById('weightInput').value)">Log</button>
+      <div class="card-title" style="margin-bottom:10px">${ICON.calendar('#E8492A')} TARGET DATE</div>
+      <div class="target-date-row">
+        <span class="target-date-val">${fmtLong(targetDate)}</span>
+        <span class="days-left-pill">${daysLeft} DAYS LEFT</span>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--temper-soft), transparent)">${ICON.ruler('#22D3EE')}</span> <span class="disp">MEASUREMENTS</span></div>
+      <div class="card-title" style="margin-bottom:12px">${ICON.trend('#E5A93C')} TREND</div>
+      ${series.length>=2 ? drawTrend(series, state.profile.goalWeight) : `<div class="empty-note">Log at least 2 weigh-ins to see your trend.</div>`}
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:12px">${ICON.ruler('#3B9CD9')} MEASUREMENTS</div>
       <div class="measure-grid">
         <div><input type="number" step="0.1" id="mWaist" placeholder="—" /><div class="measure-field-label">Waist cm</div></div>
         <div><input type="number" step="0.1" id="mChest" placeholder="—" /><div class="measure-field-label">Chest cm</div></div>
         <div><input type="number" step="0.1" id="mArm" placeholder="—" /><div class="measure-field-label">Arm cm</div></div>
       </div>
-      <button class="btn btn-outline" style="width:100%" onclick="logMeasurement()">Log Measurements</button>
+      <button class="btn btn-outline" onclick="logMeasurement()">Log Measurements</button>
       ${state.measurements.length ? `<div class="measure-history">
         ${state.measurements.slice(-5).reverse().map(m => `<div class="measure-row"><span class="d">${fmtShort(m.date)}</span><span>W ${m.waist??'—'} · C ${m.chest??'—'} · A ${m.arm??'—'}</span></div>`).join('')}
       </div>` : ''}
     </div>
 
     <div class="card">
-      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.gauge('#FF6B35')}</span> <span class="disp">CONSISTENCY</span></div>
+      <div class="card-title" style="margin-bottom:12px">${ICON.gauge('#E8492A')} CONSISTENCY</div>
       ${drawHeatmap()}
       <div class="heatmap-legend">
         <span>less</span>
-        <span class="legend-sq" style="background:rgba(255,255,255,0.05)"></span>
-        <span class="legend-sq" style="background:#22D3EE"></span>
-        <span class="legend-sq" style="background:#FFC145"></span>
-        <span class="legend-sq" style="background:#FF6B35"></span>
+        <span class="legend-sq" style="background:#1B1E24"></span>
+        <span class="legend-sq" style="background:#3B9CD9"></span>
+        <span class="legend-sq" style="background:#E5A93C"></span>
+        <span class="legend-sq" style="background:#E8492A"></span>
         <span>more</span>
       </div>
     </div>
 
     <div class="card">
-      <div class="card-title" style="margin-bottom:11px"><span class="card-icon-badge" style="background:linear-gradient(135deg, var(--ember-soft), transparent)">${ICON.flame('#FF6B35')}</span> <span class="disp">STATS</span></div>
+      <div class="card-title" style="margin-bottom:12px">${ICON.flame('#E8492A')} STREAK</div>
       <div class="stats-grid">
-        <div class="stat-box"><div class="stat-label">Lost So Far</div><div class="stat-value">${lostSoFar.toFixed(1)} kg</div></div>
-        <div class="stat-box"><div class="stat-label">Remaining</div><div class="stat-value">${Math.max(0,totalToLose-lostSoFar).toFixed(1)} kg</div></div>
-        <div class="stat-box"><div class="stat-label">Target Date</div><div class="stat-value" style="font-size:1rem">${fmtShort(targetDate)}</div></div>
-        <div class="stat-box"><div class="stat-label">Streak</div><div class="stat-value">${streak}d</div></div>
+        <div class="stat-box"><div class="stat-label">Current</div><div class="stat-value">${streak}d</div></div>
+        <div class="stat-box"><div class="stat-label">7d Avg Mass</div><div class="stat-value">${wAvg ? wAvg.toFixed(1)+'kg' : '—'}</div></div>
       </div>
     </div>`;
   }
 
   html += `</div>
   <div class="tabs">
-    <button class="tab-btn ${tab==='today'?'active':''}" onclick="tab='today';render()">${ICON.hammer(tab==='today'?'#FF6B35':'#62656E')}<span>Today</span></button>
-    <button class="tab-btn ${tab==='plan'?'active':''}" onclick="tab='plan';render()">${ICON.calendar(tab==='plan'?'#FF6B35':'#62656E')}<span>Plan</span></button>
-    <button class="tab-btn ${tab==='progress'?'active':''}" onclick="tab='progress';render()">${ICON.trend(tab==='progress'?'#FF6B35':'#62656E')}<span>Progress</span></button>
+    <button class="tab-btn ${tab==='today'?'active':''}" onclick="tab='today';render()">${ICON.dumbbell(tab==='today'?'#E8492A':'#55585F')}<span>Today</span></button>
+    <button class="tab-btn ${tab==='plan'?'active':''}" onclick="tab='plan';render()">${ICON.calendar(tab==='plan'?'#E8492A':'#55585F')}<span>Plan</span></button>
+    <button class="tab-btn ${tab==='progress'?'active':''}" onclick="tab='progress';render()">${ICON.trend(tab==='progress'?'#E8492A':'#55585F')}<span>Progress</span></button>
   </div>`;
 
   document.getElementById('app').innerHTML = html;

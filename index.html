@@ -312,6 +312,36 @@ function logMeasurement(){
   state.measurements.push({ date: todayKey(), waist: waist||null, chest: chest||null, arm: arm||null });
   save(); render();
 }
+function exportBackup(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `temper-backup-${todayKey()}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+function importBackup(event){
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed.profile || !parsed.logs) throw new Error('Invalid backup file');
+      state = { profile: parsed.profile, logs: parsed.logs, measurements: parsed.measurements || [] };
+      save();
+      render();
+      alert('Backup restored.');
+    } catch(err) {
+      alert('Could not read that file — is it a Temper backup JSON?');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
 
 // ============ Derived ============
 function weightSeries(){
@@ -630,6 +660,16 @@ function render(){
         <span class="legend-sq" style="background:#E8492A"></span>
         <span>more</span>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:8px">${ICON.save('#3B9CD9')} BACKUP</div>
+      <div class="card-tag" style="margin-bottom:11px">Your data lives only in this browser. Export it after logging so a storage wipe or new device doesn't lose your progress.</div>
+      <div class="input-row">
+        <button class="btn btn-outline" style="flex:1" onclick="exportBackup()">Export Backup</button>
+        <button class="btn btn-outline" style="flex:1" onclick="document.getElementById('importFile').click()">Import Backup</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json" style="display:none" onchange="importBackup(event)" />
     </div>
 
     <div class="card">

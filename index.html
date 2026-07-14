@@ -161,56 +161,57 @@
 <script>
 // ============ Program data ============
 const SPLIT = {
-  1: { name: "Upper Pull", tag: "Back / Biceps / Rear Delts", rest: false, exercises: [
-    { id: "mon1", name: "DB Bent-Over Row", sets: "4x8-10" },
-    { id: "mon2", name: "Single-Arm DB Row", sets: "3x10/side" },
-    { id: "mon3", name: "DB Reverse Fly", sets: "3x15" },
-    { id: "mon4", name: "DB Bicep Curl", sets: "3x12" },
-    { id: "mon5", name: "DB Hammer Curl", sets: "3x12" },
-    { id: "mon6", name: "DB Shrugs", sets: "3x15" },
-  ]},
-  2: { name: "Lower A", tag: "Quads / Hamstrings / Calves", rest: false, exercises: [
-    { id: "tue1", name: "DB Goblet Squat", sets: "4x10-12" },
-    { id: "tue2", name: "DB Romanian Deadlift", sets: "3x10-12" },
-    { id: "tue3", name: "DB Walking Lunges", sets: "3x12/leg" },
-    { id: "tue4", name: "DB Calf Raise", sets: "4x15-20" },
-    { id: "tue5", name: "Lying Leg Raises", sets: "3x15" },
-    { id: "tue6", name: "Plank", sets: "3x45s" },
-  ]},
-  3: { name: "Active Recovery", tag: "Walk + Stretch", rest: true, exercises: [
-    { id: "wed1", name: "Brisk Walk", sets: "25-30 min" },
-    { id: "wed2", name: "Full Body Stretch", sets: "10-15 min" },
-  ]},
-  4: { name: "Upper Pull", tag: "Back / Biceps / Rear Delts", rest: false, exercises: [
-    { id: "thu1", name: "DB Bent-Over Row", sets: "4x8-10" },
-    { id: "thu2", name: "Single-Arm DB Row", sets: "3x10/side" },
-    { id: "thu3", name: "DB Reverse Fly", sets: "3x15" },
-    { id: "thu4", name: "DB Bicep Curl", sets: "3x12" },
-    { id: "thu5", name: "DB Hammer Curl", sets: "3x12" },
-    { id: "thu6", name: "DB Shrugs", sets: "3x15" },
-  ]},
-  5: { name: "Lower B", tag: "Glutes / Hamstrings / Core", rest: false, exercises: [
-    { id: "fri1", name: "DB Bulgarian Split Squat", sets: "3x10/leg" },
-    { id: "fri2", name: "DB Step-Ups", sets: "3x12/leg" },
-    { id: "fri3", name: "DB Sumo Squat", sets: "3x12" },
-    { id: "fri4", name: "DB Stiff-Leg Deadlift", sets: "3x12" },
-    { id: "fri5", name: "DB Loaded Glute Bridge", sets: "3x15" },
-    { id: "fri6", name: "Russian Twists", sets: "3x20" },
-  ]},
-  6: { name: "Full Body Conditioning", tag: "Fat-loss circuit", rest: false, exercises: [
-    { id: "sat1", name: "DB Thrusters", sets: "4x12" },
-    { id: "sat2", name: "Renegade Rows", sets: "3x10/side" },
-    { id: "sat3", name: "DB Squat to Press", sets: "3x12" },
-    { id: "sat4", name: "Burpees", sets: "3x15" },
-    { id: "sat5", name: "Mountain Climbers", sets: "3x30s" },
-    { id: "sat6", name: "Jump Squats", sets: "3x15" },
-  ]},
-  0: { name: "Upper Push", tag: "Chest / Shoulders / Triceps", rest: false, exercises: [
+  0: { name: "Upper Push A", tag: "Chest focus / Shoulders / Triceps", rest: false, exercises: [
     { id: "sun1", name: "DB Flat Bench Press", sets: "4x8-10" },
-    { id: "sun2", name: "DB Shoulder Press", sets: "3x10-12" },
-    { id: "sun3", name: "Incline DB Press", sets: "3x10-12" },
-    { id: "sun4", name: "DB Lateral Raise", sets: "3x15" },
-    { id: "sun5", name: "DB Overhead Triceps Ext.", sets: "3x12" },
+    { id: "sun2", name: "Incline DB Press", sets: "4x8-10" },
+    { id: "sun3", name: "DB Chest Fly", sets: "3x12" },
+    { id: "sun4", name: "DB Shoulder Press", sets: "3x10-12" },
+    { id: "sun5", name: "DB Skull Crushers", sets: "3x10-12" },
+    { id: "sun6", name: "DB Overhead Triceps Ext.", sets: "3x12" },
+  ]},
+  1: { name: "Lower A — Quad Focus", tag: "Quads / Calves / Abs", rest: false, exercises: [
+    { id: "mon1", name: "DB Goblet Squat", sets: "4x8-10" },
+    { id: "mon2", name: "DB Front-Loaded Split Squat", sets: "3x10/leg" },
+    { id: "mon3", name: "DB Walking Lunges", sets: "3x12/leg" },
+    { id: "mon4", name: "DB Calf Raise", sets: "4x15-20" },
+    { id: "mon5", name: "Weighted Crunches (DB on chest)", sets: "3x15" },
+    { id: "mon6", name: "Hanging or Lying Leg Raises", sets: "3x12-15" },
+  ]},
+  2: { name: "Upper Pull A", tag: "Back focus / Biceps / Rear Delts", rest: false, exercises: [
+    { id: "tue1", name: "DB Bent-Over Row", sets: "4x8-10" },
+    { id: "tue2", name: "Single-Arm DB Row", sets: "3x10/side" },
+    { id: "tue3", name: "DB Reverse Fly", sets: "3x15" },
+    { id: "tue4", name: "DB Shrugs", sets: "4x12-15" },
+    { id: "tue5", name: "DB Bicep Curl", sets: "3x10-12" },
+    { id: "tue6", name: "DB Concentration Curl", sets: "3x12/side" },
+  ]},
+  3: { name: "Rest Day", tag: "Recovery — walk 30min optional", rest: true, exercises: [
+    { id: "wed1", name: "Brisk Walk", sets: "30 min" },
+    { id: "wed2", name: "Full Body Stretch", sets: "10 min" },
+  ]},
+  4: { name: "Upper Push B", tag: "Shoulder focus / Chest / Triceps", rest: false, exercises: [
+    { id: "thu1", name: "DB Seated Shoulder Press", sets: "4x8-10" },
+    { id: "thu2", name: "DB Lateral Raise", sets: "4x12-15" },
+    { id: "thu3", name: "DB Front Raise", sets: "3x12" },
+    { id: "thu4", name: "DB Floor Press", sets: "3x10-12" },
+    { id: "thu5", name: "DB Triceps Kickbacks", sets: "3x12/side" },
+    { id: "thu6", name: "Plank (weighted if easy)", sets: "3x45-60s" },
+  ]},
+  5: { name: "Lower B — Posterior Chain", tag: "Glutes / Hamstrings", rest: false, exercises: [
+    { id: "fri1", name: "DB Romanian Deadlift", sets: "4x8-10" },
+    { id: "fri2", name: "DB Bulgarian Split Squat", sets: "3x10/leg" },
+    { id: "fri3", name: "DB Stiff-Leg Deadlift", sets: "3x12" },
+    { id: "fri4", name: "DB Loaded Glute Bridge", sets: "4x12-15" },
+    { id: "fri5", name: "DB Sumo Squat", sets: "3x12" },
+    { id: "fri6", name: "Seated Calf Raise (DB on knees)", sets: "3x15-20" },
+  ]},
+  6: { name: "Upper Pull B", tag: "Biceps / Rear Delts / Abs", rest: false, exercises: [
+    { id: "sat1", name: "Chest-Supported DB Row", sets: "4x10-12" },
+    { id: "sat2", name: "DB Pullover", sets: "3x12" },
+    { id: "sat3", name: "DB Hammer Curl", sets: "3x10-12" },
+    { id: "sat4", name: "DB Reverse Curl", sets: "3x12" },
+    { id: "sat5", name: "Russian Twists (with DB)", sets: "3x20 total" },
+    { id: "sat6", name: "Ab Wheel or DB V-Ups", sets: "3x12" },
   ]},
 };
 
@@ -230,7 +231,7 @@ const MEALS = {
     { id: "evening", name: "Evening (optional)", desc: "2 boiled eggs or cottage cheese", kcal: 150, p: 15 },
   ]},
 };
-const MACRO_TARGET = { kcal: 2485, protein: 180, fat: 70, carbs: 280 };
+const MACRO_TARGET = { kcal: 2485, protein: 200, fat: 70, carbs: 265 };
 const DAY_NAMES = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
 
 // ============ Helpers ============

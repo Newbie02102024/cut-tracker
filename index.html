@@ -374,8 +374,12 @@ function computeStreak(){
     const plan = SPLIT[dow];
     const log = getLog(cursor);
     if (plan.rest) { cursor = addDays(cursor,-1); continue; }
-    const allDone = plan.exercises.every(e => log.exercises[e.id]);
-    if (allDone) { count++; cursor = addDays(cursor,-1); }
+    // Count any day where the user ticked at least ~half the checkboxes as a completed workout day.
+    // This keeps the streak resilient to plan changes (exercise IDs shifting between versions).
+    const totalChecks = Object.values(log.exercises||{}).filter(v => v === true).length;
+    const threshold = Math.max(3, Math.ceil(plan.exercises.length / 2));
+    const workoutDone = totalChecks >= threshold;
+    if (workoutDone) { count++; cursor = addDays(cursor,-1); }
     else { if (cursor===todayKey()) { cursor = addDays(cursor,-1); continue; } break; }
   }
   return count;

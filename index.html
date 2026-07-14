@@ -672,6 +672,30 @@ function render(){
     </div>
 
     <div class="card">
+      <div class="card-title" style="margin-bottom:8px">${ICON.gauge('#E5A93C')} STREAK DIAGNOSTIC</div>
+      <div class="card-tag" style="margin-bottom:11px">Shows the last 7 days and how the streak is being calculated. A day "counts" if you checked at least half its exercises (or 3, whichever's larger).</div>
+      <div class="measure-history">
+        ${(() => {
+          const rows = [];
+          for (let i=0; i<7; i++){
+            const d = addDays(todayKey(), -i);
+            const dow2 = dayOfWeek(d);
+            const p = SPLIT[dow2];
+            const log = getLog(d);
+            const ticks = Object.values(log.exercises||{}).filter(v => v === true).length;
+            const threshold = Math.max(3, Math.ceil(p.exercises.length / 2));
+            let status;
+            if (p.rest) status = '<span style="color:var(--slate)">REST (skipped)</span>';
+            else if (ticks >= threshold) status = `<span style="color:var(--verdigris)">✓ counts (${ticks}/${p.exercises.length})</span>`;
+            else status = `<span style="color:var(--slate-dim)">${ticks}/${p.exercises.length} — need ${threshold}</span>`;
+            rows.push(`<div class="measure-row"><span class="d">${DAY_NAMES[dow2]} ${fmtShort(d)}${d===todayKey()?' ·today':''}</span><span>${status}</span></div>`);
+          }
+          return rows.join('');
+        })()}
+      </div>
+    </div>
+
+    <div class="card">
       <div class="card-title" style="margin-bottom:8px">${ICON.save('#3B9CD9')} BACKUP</div>
       <div class="card-tag" style="margin-bottom:11px">Your data lives only in this browser. Export it after logging so a storage wipe or new device doesn't lose your progress.</div>
       <div class="input-row">

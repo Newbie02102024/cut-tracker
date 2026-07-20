@@ -270,7 +270,7 @@ function addDays(key,n){ const d=new Date(key+"T00:00:00"); d.setDate(d.getDate(
 function dayOfWeek(key){ return new Date(key+"T00:00:00").getDay(); }
 function mealPlanFor(key){ return (new Date(key+"T00:00:00").getDate()%2===0) ? MEALS.A : MEALS.B; }
 
-const DEFAULT_PROFILE = { height:183, age:21, startWeight:85, goalWeight:78, startDate: todayKey() };
+const DEFAULT_PROFILE = { height:183, age:21, startWeight:85, goalWeight:75, startDate: todayKey() };
 function emptyDayLog(){ return { exercises:{}, meals:{}, water:0, weight:null, energy:null }; }
 
 // ============ State ============
@@ -329,6 +329,13 @@ function logWeight(key, val){
   const day = Object.assign(emptyDayLog(), state.logs[key]);
   day.weight = num;
   state.logs[key] = day; save(); render();
+}
+function saveProfileEdit(){
+  const startVal = parseFloat(document.getElementById('editStart').value);
+  const goalVal = parseFloat(document.getElementById('editGoal').value);
+  if (!isNaN(startVal) && startVal > 0) state.profile.startWeight = startVal;
+  if (!isNaN(goalVal) && goalVal > 0) state.profile.goalWeight = goalVal;
+  save(); render();
 }
 function logMeasurement(){
   const waist = parseFloat(document.getElementById('mWaist').value);
@@ -646,6 +653,16 @@ function render(){
       ${series.length ? `<div class="measure-history" style="margin-top:11px">
         ${series.slice(-5).reverse().map(s => `<div class="measure-row"><span class="d">${fmtShort(s.date)}${s.date===todayKey()?' · today':''}</span><span>${s.weight.toFixed(1)} kg</span></div>`).join('')}
       </div>` : `<div class="card-tag" style="margin-top:10px">No weigh-ins logged yet — enter one above.</div>`}
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom:6px">${ICON.target('#3B9CD9')} GOAL SETTINGS</div>
+      <div class="card-tag" style="margin-bottom:11px">Edit your start/goal weight directly — useful if your original numbers weren't accurate.</div>
+      <div class="measure-grid" style="grid-template-columns:1fr 1fr">
+        <div><input type="number" step="0.1" id="editStart" value="${state.profile.startWeight}" /><div class="measure-field-label">Start kg</div></div>
+        <div><input type="number" step="0.1" id="editGoal" value="${state.profile.goalWeight}" /><div class="measure-field-label">Goal kg</div></div>
+      </div>
+      <button class="btn btn-outline" onclick="saveProfileEdit()">Update</button>
     </div>
 
     <div class="stats-grid" style="margin-bottom:12px">
